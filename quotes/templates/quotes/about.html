@@ -1,0 +1,14 @@
+{% extends "quotes/base.html" %}
+{% block title %}About — {{ person }}{% endblock %}
+{% block content %}
+  <h1>About</h1>
+  <h2>{{ person }}</h2>
+  <p>
+    Add a short bio for {{ person }} here. You can keep it to a few sentences.
+  </p>
+
+  <h3>About the creator</h3>
+  <p>
+    This web app was created by {{ creator }} for a CS assignment.
+  </p>
+{% endblock %}

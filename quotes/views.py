@@ -10,7 +10,9 @@ QUOTES = [
 ]
 
 IMAGES = [
-    
+    "https://placehold.co/800x500?text=Einstein+1",
+    "https://placehold.co/800x500?text=Einstein+2",
+    "https://placehold.co/800x500?text=Einstein+3",
 ]
 
 def quote(request):
