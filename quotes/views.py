@@ -10,10 +10,10 @@ QUOTES = [
 ]
 
 IMAGES = [
-    "https://placehold.co/800x500?text=Einstein+1",
-    "https://placehold.co/800x500?text=Einstein+2",
-    "https://placehold.co/800x500?text=Einstein+3",
-]
+    "https://i0.wp.com/maepolzine.com/wp-content/uploads/2019/05/Daenerys-Targaryen-Hair-S1.jpg?fit=970%2C546&ssl=1",
+    "https://static.wikia.nocookie.net/iceandfire/images/c/c0/7dff25854a409a596b954d04f6c3a98d.jpg/revision/latest/scale-to-width/360?cb=20250608221439",
+    "https://behindthechair.com/wp-content/uploads/2017/10/halloween-how-to-daenerys-targaryen-braids.jpg"
+    ]
 
 def quote(request):
     """Main page & /quote, show one random quote + one random image"""
