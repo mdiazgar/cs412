@@ -26,6 +26,8 @@ SECRET_KEY = 'django-insecure-2gnv(h@osbun3^$6z__7*1+2i@3*5zgex_%+fs&0+of4^tfj(w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+FORCE_SCRIPT_NAME = '/mdiazg'
+
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'cs-webapps.bu.edu']
 
 
@@ -117,7 +119,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = f'{FORCE_SCRIPT_NAME}/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
