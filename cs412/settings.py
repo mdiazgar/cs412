@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-import socket
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -125,18 +124,19 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')   # collectstatic output
 STATIC_URL = 'static/'                   # source URL (no leading slash)
-STATIC_ROOT = BASE_DIR / 'staticfiles'   # collectstatic output
 
 STATICFILES_DIRS = [                     # source folders you author in
-    BASE_DIR / 'static',                 # create this folder next to manage.py
+    os.path.join(BASE_DIR, "static"),                 # create this folder next to manage.py
 ]
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
+import socket
 CS_DEPLOYMENT_HOSTNAME = 'cs-webapps.bu.edu'
-CS_USERNAME = 'mdiazg'                  
+
 if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
-    STATIC_URL = f'/mdiazg/static/'
-    MEDIA_URL  = f'/mdiazg/media/'
+    STATIC_URL = '/mdiazg/static/'
+    MEDIA_URL  = '/mdiazg/media/'
