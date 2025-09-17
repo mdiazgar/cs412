@@ -3,6 +3,8 @@
 {% block content %}
   <h1>{{ person }}</h1>
   <p class="quote">“{{ quote }}”</p>
-  <img src="{{ image_url }}" alt="{{ person }} portrait" />
-  <p class="muted">Refresh or visit <a href="/quote/">/quote</a> for another.</p>
+  <img src="{{ image_url }}" alt="{{ person }} portrait">
+  <p class="muted">
+    Refresh or visit <a href="{% url 'quote' %}">/quote/</a> for another.
+  </p>
 {% endblock %}
