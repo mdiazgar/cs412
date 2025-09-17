@@ -119,22 +119,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = f'{FORCE_SCRIPT_NAME}/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')   # collectstatic output
-STATIC_URL = 'static/'                   # source URL (no leading slash)
-
-STATICFILES_DIRS = [                     # source folders you author in
-    os.path.join(BASE_DIR, "static"),                 # create this folder next to manage.py
-]
+STATIC_URL = f'{FORCE_SCRIPT_NAME}/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')   # where collectstatic writes to
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_URL = 'media/'
+MEDIA_URL = f'{FORCE_SCRIPT_NAME}/media/'
+
 
 import socket
 CS_DEPLOYMENT_HOSTNAME = 'cs-webapps.bu.edu'
