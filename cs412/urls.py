@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# cs412/urls.py
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -21,8 +22,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(('quotes.urls', 'quotes'), namespace='quotes')),
-    path('restaurant/', include(('restaurant.urls','restaurant'), namespace='restaurant')),
+    path('', include('quotes.urls', namespace='quotes')),   # ← namespaced include
+    path('restaurant/', include('restaurant.urls', namespace='restaurant')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-
