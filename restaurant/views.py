@@ -1,7 +1,71 @@
-from django.shortcuts import render
-
-# Create your views here.
+from django.shortcuts import render, redirect
+from decimal import Decimal
+import random
 from django.http import HttpResponse
 
-def index(request):
-    return HttpResponse("Welcome to Casa Manolo!")
+MENU = [
+    {'key': 'tortilla', 'name': 'Tortilla de Patatas', 'price': Decimal('12.00')},
+    {'key': 'croquetas', 'name': 'Croquetas de Jamon Iberico', 'price': Decimal('9.50')},
+    {'key': 'salmorejo', 'name': 'Salmorejo Andaluz', 'price': Decimal('8.00')},
+    {'key': 'paella', 'name': 'Paella con Conejo', 'price': Decimal('15.75')},
+]
+
+DAILY_SPECIALS = [
+    {'key': 'sopa',  'name': 'Sopa de Estrellitas', 'price': Decimal('8.00'), 'desc': 'Family recipe for soup when someone is not feeling well'},
+    {'key': 'tostada', 'name': 'Tostada con Fuet', 'price': Decimal('5.50'), 'desc': 'Our special breakfast with hand made bread, butter imported from Toledo and fuet from Barcelona'},
+    
+]
+
+def main(request):
+    ctx = {
+        'restaurant_name': 'Casa Manolo',
+        'location': 'Calle Brujidero, Toledo, España',
+    }
+    return render(request, 'restaurant/main.html', ctx)
+
+def order(request):
+    special = random.choice(DAILY_SPECIALS)
+    ctx = {
+        'menu': MENU,
+        'special': special,
+    }
+    return render(request, 'restaurant/order.html', ctx)
+
+def confirmation(request):
+    if request.method != 'POST':
+        return redirect('restaurant:order')
+
+    name = request.POST.get('name', '').strip()
+    phone = request.POST.get('phone', '').strip()
+    email = request.POST.get('email', '').strip()
+    instructions = request.POST.get('instructions', '').strip()
+
+    items_ordered = []
+    total = Decimal('0.00')
+    
+    menu_by_key = {m['key']: m for m in MENU}
+    for key, item in menu_by_key.items():
+        if request.POST.get(key):  
+            items_ordered.append({'name': item['name'], 'price': item['price']})
+            total += item['price']
+    
+        if request.POST.get('daily_special'):
+            special_name = request.POST.get('special_name')
+            special_price_str = request.POST.get('special_price')
+            if special_name and special_price_str:
+                price = Decimal(special_price_str)
+                items_ordered.append({'name': special_name, 'price': price})
+                total += price
+    
+    empty_order = (len(items_ordered) == 0)
+    
+    ctx = {
+        'name': name,
+        'phone': phone,
+        'email': email,
+        'instructions': instructions,
+        'items': items_ordered,
+        'total': total,
+        'empty order': empty_order
+    }
+    return render(request, 'restaurant/confirmation.html', ctx)
