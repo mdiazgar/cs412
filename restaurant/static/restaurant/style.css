@@ -1,228 +1,41 @@
-body {
-    background-color: #fff;
-    color: slategray;
-    font-family: arial;
-}
+:root { --fg:#222; --bg:#fff; --brand:#b22222; --muted:#666; --line:#eee; }
+* { box-sizing: border-box; }
+body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--fg); background:var(--bg); }
+.container { max-width: 920px; margin: 0 auto; padding: 16px; }
+.site-header { border-bottom: 1px solid var(--line); background:#fafafa; }
+.brand { margin:0; font-size: 1.4rem; }
+.brand a { color: var(--brand); text-decoration: none; }
+.nav a { margin-left: 16px; text-decoration: none; color: var(--fg); }
+.nav a:hover { text-decoration: underline; }
+.site-footer { margin-top: 48px; border-top:1px solid var(--line); padding: 16px 0; color: var(--muted); }
 
-h1,h2,h3,h4,h5{
-    font-weight: normal;
-    background:aliceblue;
-    margin: 0;
-}
+.hero { display:grid; grid-template-columns: 1.2fr 1fr; gap: 16px; align-items: center; margin: 16px 0 24px; }
+.hero-img img { width: 100%; height: auto; border-radius: 12px; }
+.hours th { text-align:left; padding:6px 10px; }
+.hours td { padding:6px 10px; color: var(--muted); }
+.hours tr:nth-child(odd) { background:#fafafa; }
 
-a, a:visited {
-    color: slategrey;
-    text-decoration: none;
-}
+.order-form fieldset { border:1px solid var(--line); border-radius: 12px; margin:16px 0; padding:16px; }
+.order-form legend { font-weight: 700; }
+.item { display:flex; align-items:center; justify-content: space-between; padding:8px 0; border-bottom: 1px dashed var(--line); }
+.item:last-child { border-bottom: 0; }
+.item-name { font-weight: 600; }
+.item-price { color: var(--muted); }
 
-a:hover {
-    color: darkblue;
-    text-decoration: none;
-    background-color: white;
-    /* font-weight: bold; */
-}
+.options { margin:8px 0 0 24px; display:flex; flex-wrap: wrap; gap: 12px; }
+.option { font-size: .95rem; }
 
-body {
-    max-width: 960px;
-    margin: 20px auto;
-    padding: 20px auto;
-}
+.order-form label { display:block; margin:8px 0; }
+.order-form input[type="text"],
+.order-form input[type="tel"],
+.order-form input[type="email"],
+.order-form textarea { width:100%; padding:10px; border:1px solid var(--line); border-radius:10px; }
 
-header {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    background:aliceblue;
-    position: fixed;
-    top: 0px;
-    z-index: 999;
-    /* padding-right: 50px auto; */
-}
+.btn { display:inline-block; padding:10px 16px; border-radius: 10px; border:1px solid var(--brand); background: var(--brand); color:#fff; text-decoration:none; }
+.btn:hover { filter: brightness(0.95); }
 
-footer {
-    width: 100%;
-    background:aliceblue;
-    position: fixed;
-    bottom: 0px;
-}
-
-
-.wrapper {              /* centering and margin around whole wrapper element */
-    border: 2px solid;
-    max-width: 100%;
-    position: relative;
-    top: 50px;
-    scroll-padding-top: 100px;
-    /* scroll-padding-bottom: 100px; */
-    padding-bottom: 50px;
-    
-    /* top:100px; */
-    /* bottom: 100px; */
-}
-
-
-div.wrapper h1 {
-    text-align: center;
-    color: darkblue;
-    margin: 10px auto;
-    font-size: 2.4 em; 
-
-}
-
-div.wrapper h2 {
-    text-align: left;
-    color: darkblue;
-    margin: 5px auto;
-    font-size: 2 em; 
-}
-
-
-section {
-    border: 2px solid darkblue;    /* border around each event */
-    position: relative;
-    padding-bottom: 4px;
-}
-
-
-nav {
-    justify-self: end;
-    background: none;
-    color: darkblue;
-    /* border: 1px solid; */
-}
-
-nav li {
-    display: inline-block;
-    margin-left: 20px;
-}
-
-nav button {
-    background: none;
-    color: slategray;
-    font-family: Arial;
-    cursor: pointer; 
-    border: 0;
-    font-size: 1.2 em;
-}
-
-.mc-table {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
-
-
-.mc-table-head {
-    border: 1px dashed darkblue;    /*border around each row */
-    display: table-row;
-    font-size: 1.2em;
-}
-
-.mc-table-head .detail {
-    display: table-cell;
-    color:darkblue;
-    font-weight: bold;
-    background-color: white;
-    padding: 5px;
-    position: relative;
-   
-}
-
-.mc-table-row  {
-    display: table-row;
-    border: 1px dashed darkblue;    /*border around each row */
-    background-color: white;
-}
-
-
-.mc-table-row .detail {
-    color:darkblue;
-    display: table-cell;
-   
-    padding: 5px;
-}
-
-.mc-table-row .detail img {
-    max-height: 75px;
-    align-content: right;
-}
-
-/* must have no space before :hover */
-.mc-table-row:hover {
-    background-color: aliceblue;    
-    border: 1px solid;
-}
-
-.site-form {
-    margin-top: 10px;
-    /* border: 2px solid darkblue; */
-    padding: 10px;
-}
-
-/* style the forms with class site-form */
-.site-form input, .site-form textarea, .site-form select {
-    display: block;
-    margin: 5px 0 0 0;
-    padding: 5px;
-}
-
-/* style the submit button ; didn't quite work?? */
-.site-form input [type="submit"] {
-    background: slategray;
-    border: 0;
-    color: fff;
-    font-size: 1.2em;
-    border-radius: 4px;
-    margin: 5px 0;
-}
-
-
-/* style the help text in the forms */
-.helptext, .helptext.ul {
-    margin-top: 0 auto;
-    bottom: 20px;
-    color: #bbb;
-    font-size: 0.9em;
-}
-
-/* style the error list in the forms validation */
-.errorlist li {
-    padding: 10px;
-    list-style-type: none;
-    border: 1px solid crimson;
-    color: crimson;
-    margin: 10px 0;
-}
-
-
-.errorlist {
-    padding: 0px;
-}
-
-
-/* responsive styles when width is less than 1400px */
-@media screen and (max-width: 560px) {
-    header h1 {
-        size: 0.8em;
-    }
-
-    nav li {
-        display: block;
-        margin-left: 0px;
-        font-size: 14px;
-        width: 100%;
-    }
-    
-    nav button {
-        background: none;
-        color: slategray;
-        font-family: Arial;
-        cursor: pointer; 
-        border: 0;
-        font-size: 20px;
-    }
-    /* on mobile, display image as max 95% of available width*/
-    img {
-        max-width: 95%;
-    }
-}
+.items { list-style:none; padding:0; margin:0; border:1px solid var(--line); border-radius:12px; }
+.items li { display:flex; justify-content:space-between; padding:10px 14px; border-bottom:1px solid var(--line); }
+.items li:last-child { border-bottom:0; }
+.total { font-size:1.1rem; margin-top:12px; }
+.alert { background:#fff5f5; border:1px solid #f5c2c7; color:#842029; padding:12px 14px; border-radius:10px; }

@@ -6,17 +6,34 @@
     {% csrf_token %}
 
     <fieldset>
-      <legend>Menu</legend>
-      {% for item in menu %}
-        <label class="item">
-          <input type="checkbox" name="{{ item.key }}" />
-          <span class="item-name">{{ item.name }}</span>
-          <span class="item-price">${{ item.price }}</span>
-        </label>
+  <legend>Menu</legend>
+  {% for item in menu %}
+    <label class="item">
+      <input type="checkbox" name="{{ item.key }}" />
+      <span class="item-name">{{ item.name }}</span>
+      <span class="item-price">${{ item.price }}</span>
+    </label>
+    {% if item.key == "paella" %}
+          <div class="options">
+            <span class="opt-label">Extras:</span>
+            <label class="option">
+              <input type="checkbox" name="extra_aioli">
+              Aioli (+$1.50)
+            </label>
+            <label class="option">
+              <input type="checkbox" name="extra_seafood">
+              Extra Seafood (+$5.00)
+            </label>
+            <label class="option">
+              <input type="checkbox" name="no_veggies">
+              No Veggies
+            </label>
           </div>
         {% endif %}
       {% endfor %}
     </fieldset>
+    
+</fieldset>
 
     <fieldset>
       <legend>Daily Special</legend>
