@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from decimal import Decimal
+import time
 import random
 from django.http import HttpResponse
 
@@ -66,6 +67,10 @@ def confirmation(request):
     
     empty_order = (len(items_ordered) == 0)
     
+    ready_in_minutes = random.randint(30, 60)
+    ready_epoch = time.time() + ready_in_minutes * 60
+    ready_time_str = time.strftime("%I:%M %p on %b %d, %Y", time.localtime(ready_epoch))
+    
     ctx = {
         'name': name,
         'phone': phone,
@@ -73,6 +78,8 @@ def confirmation(request):
         'instructions': instructions,
         'items': items_ordered,
         'total': total,
-        'empty order': empty_order
+        'empty order': empty_order,
+        'ready_in_minutes': ready_in_minutes,
+        'ready_time_str': ready_time_str,
     }
     return render(request, 'restaurant/confirmation.html', ctx)

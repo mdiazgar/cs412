@@ -30,5 +30,11 @@
     </section>
   {% endif %}
 
+    <section>
+  <h3>Pickup Details</h3>
+  <p>Your order will be ready in {{ ready_in_minutes }} minutes
+     (around <strong>{{ ready_time_str }}</strong>).</p>
+</section>
+
   <p><a class="btn" href="{% url 'restaurant:order' %}">Place another order</a></p>
 {% endblock %}
