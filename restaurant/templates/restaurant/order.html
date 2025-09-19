@@ -1,0 +1,56 @@
+{% extends "restaurant/base.html" %}
+{% block title %}Order Casa Lola{% endblock %}
+{% block content %}
+  <h2>Place your order</h2>
+  <form method="post" action="{% url 'restaurant:confirmation' %}" class="order-form">
+    {% csrf_token %}
+
+    <fieldset>
+      <legend>Menu</legend>
+      {% for item in menu %}
+        <label class="item">
+          <input type="checkbox" name="{{ item.key }}" />
+          <span class="item-name">{{ item.name }}</span>
+          <span class="item-price">${{ item.price }}</span>
+        </label>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </fieldset>
+
+    <fieldset>
+      <legend>Daily Special</legend>
+      <label class="item">
+        <input type="checkbox" name="daily_special" />
+        <span class="item-name">{{ special.name }}</span>
+        <span class="item-price">${{ special.price }}</span>
+        <div class="item-desc">{{ special.desc }}</div>
+      </label>
+      <!-- Keep special values on POST -->
+      <input type="hidden" name="special_name"  value="{{ special.name }}">
+      <input type="hidden" name="special_price" value="{{ special.price }}">
+    </fieldset>
+
+    <fieldset>
+      <legend>Customer Info</legend>
+      <label>
+        Name
+        <input type="text" name="name" required>
+      </label>
+      <label>
+        Phone
+        <input type="tel" name="phone" required>
+      </label>
+      <label>
+        Email
+        <input type="email" name="email" required>
+      </label>
+      <label>
+        Special Instructions
+        <textarea name="instructions" rows="3" placeholder="e.g., no onions, ring the doorbell"></textarea>
+      </label>
+    </fieldset>
+
+    <button type="submit" class="btn">Submit order</button>
+  </form>
+{% endblock %}
