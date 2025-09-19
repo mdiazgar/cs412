@@ -19,9 +19,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('quotes.urls', namespace='quotes')),
-   path('restaurant/', include('restaurant.urls', namespace='restaurant')),
+    path('restaurant/', include(('restaurant.urls', 'restaurant'), namespace='restaurant')),
+    path('restaurant', RedirectView.as_view(url='/mdiazg/restaurant/main/', permanent=False)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

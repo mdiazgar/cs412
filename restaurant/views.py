@@ -14,13 +14,14 @@ DAILY_SPECIALS = [
     {'key': 'sopa',  'name': 'Sopa de Estrellitas', 'price': Decimal('8.00'), 'desc': 'Family recipe for soup when someone is not feeling well'},
     {'key': 'tostada', 'name': 'Tostada con Fuet', 'price': Decimal('5.50'), 'desc': 'Our special breakfast with hand made bread, butter imported from Toledo and fuet from Barcelona'},
     {'key': 'migas', 'name': "Migas de Juan", 'price': Decimal('99.99'), 'desc': 'The famous migas cooked for hours by our very own Masterchef Junior participant Juan Diaz'},
-    {'key': 'churros', 'name': 'San Gines Churros', 'price': Decimal(9.10), 'desc': 'Most famous spanish breakfast these churros are imported from the best churreria in Madrid'}
+    {'key': 'churros', 'name': 'San Gines Churros', 'price': Decimal('9.10'), 'desc': 'Most famous spanish breakfast these churros are imported from the best churreria in Madrid'},
+    {'key': 'merienda', 'name': 'Merienda del Abuelo', 'price': Decimal('11.11'), 'desc': 'La merienda del abuelo, incluye su cafe con leche y bocadillos de jamon y bacon para todos los primos'}
 ]
 
 def main(request):
     ctx = {
-        'restaurant_name': 'Casa Manolo',
-        'location': 'Calle Brujidero, Toledo, España',
+        'restaurant_name': 'Casa Lola',
+        'location': 'Calle Brujidero, Cunit, España',
     }
     return render(request, 'restaurant/main.html', ctx)
 
