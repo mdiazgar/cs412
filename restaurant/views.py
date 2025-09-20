@@ -22,7 +22,7 @@ DAILY_SPECIALS = [
 def main(request):
     ctx = {
         'restaurant_name': 'Casa Lola',
-        'location': 'Calle Brujidero, Cunit, España',
+        'location': 'Calle Brujidero 9, Cunit, España',
         'hours': [
             ('Mon–Thu', '9:00 – 22:00'),
             ('Fri–Sat', '9:00 – 23:00'),
