@@ -26,5 +26,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('quotes.urls', namespace='quotes')),
     path('restaurant/', include(('restaurant.urls', 'restaurant'), namespace='restaurant')),
-    path('restaurant', RedirectView.as_view(url='/mdiazg/restaurant/main/', permanent=False)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
