@@ -24,7 +24,6 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('quotes/', include('quotes.urls', namespace='quotes')),
+    path('', include('quotes.urls', namespace='quotes')),
     path('restaurant/', include(('restaurant.urls', 'restaurant'), namespace='restaurant')),
-] 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
