@@ -9,13 +9,17 @@
     <div class="profile-grid">
       {% for p in profiles %}
         <article class="profile-card">
-          <img
-            src="{{ p.profile_image_url }}"
-            alt="{{ p.display_name|default:p.username }}'s profile image"
-            class="profile-image"
-          >
+          <a href="{% url 'mini_insta:show_profile' p.pk %}">
+            <img
+              src="{{ p.profile_image_url }}"
+              alt="{{ p.display_name|default:p.username }}'s profile image"
+              class="profile-image"
+            >
+          </a>
           <div class="profile-meta">
-            <div class="username">@{{ p.username }}</div>
+            <div class="username">
+              <a href="{% url 'mini_insta:show_profile' p.pk %}">@{{ p.username }}</a>
+            </div>
             <div class="display-name">{{ p.display_name }}</div>
           </div>
         </article>
