@@ -1,0 +1,27 @@
+{% extends "mini_insta/base.html" %}
+
+{% block title %}Showing all profiles{% endblock %}
+
+{% block content %}
+  <h2>All Profiles</h2>
+
+  {% if profiles %}
+    <div class="profile-grid">
+      {% for p in profiles %}
+        <article class="profile-card">
+          <img
+            src="{{ p.profile_image_url }}"
+            alt="{{ p.display_name|default:p.username }}'s profile image"
+            class="profile-image"
+          >
+          <div class="profile-meta">
+            <div class="username">@{{ p.username }}</div>
+            <div class="display-name">{{ p.display_name }}</div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No profiles found.</p>
+  {% endif %}
+{% endblock %}

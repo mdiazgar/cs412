@@ -1,0 +1,27 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Mini Insta{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'styles_mini_insta.css' %}">
+
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; margin: 2rem; }
+      nav a { margin-right: 1rem; }
+      img { max-width: 100%; height: auto; border-radius: 8px; }
+      .quote { font-size: 1.5rem; margin: 1rem 0; }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+      .muted { color: #666; }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <li><a href="{% url 'mini_insta:show_all_profiles' %}">Home</a></li>
+    </nav>
+    <hr />
+    {% block content %}{% endblock %}
+  </body>
+</html>
