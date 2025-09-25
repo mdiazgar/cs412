@@ -10,4 +10,5 @@ urlpatterns = [
     path('main/', views.main, name='main'),
     path('order/', views.order, name='order'),
     path('confirmation/', views.confirmation, name='confirmation'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] 
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
