@@ -1,0 +1,20 @@
+{% extends "mini_insta/base.html" %}
+
+{% block title %}{{ profile.display_name|default:profile.username }} · Profile{% endblock %}
+
+{% block content %}
+  <article class="profile-detail">
+    <img
+      src="{{ profile.profile_image_url }}"
+      alt="{{ profile.display_name|default:profile.username }}'s profile image"
+      class="profile-image"
+    >
+    <h2>@{{ profile.username }}</h2>
+    {% if profile.display_name %}
+      <p class="muted">{{ profile.display_name }}</p>
+    {% endif %}
+    {% if profile.bio %}<p>{{ profile.bio }}</p>{% endif %}
+  </article>
+
+  <p><a href="{% url 'mini_insta:show_all_profiles' %}">&larr; Back to all profiles</a></p>
+{% endblock %}
