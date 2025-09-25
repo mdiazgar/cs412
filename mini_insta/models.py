@@ -1,3 +1,10 @@
+# File: mini_insta/models.py
+# Author: María Díaz Garrido
+# Description: Database models for the mini_insta app. Defines the Profile model
+#              with username, display_name, bio_text, profile_image_url (URL),
+#              and join_date (auto-updated). __str__ returns the username.
+
+
 from django.db import models
 
 # Create your models here.
@@ -12,5 +19,5 @@ class Profile(models.Model):
     join_date= models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        "return a string representation of this model instance"
+        "Return a string representation of this model instance"
         return f'{self.username}' 

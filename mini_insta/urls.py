@@ -1,3 +1,9 @@
+# File: mini_insta/urls.py
+# Author: María Díaz Garrido
+# Description: URL routes for the mini_insta app. Maps:
+#   - '' → ProfileListView (named 'show_all_profiles')
+#   - 'profile/<int:pk>/' → ProfileDetailView (named 'show_profile')\
+    
 from django.urls import path
 from django.conf import settings
 from .views import ProfileListView

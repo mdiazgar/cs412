@@ -1,3 +1,11 @@
+<!-- File: show_profile.html
+  Author: María Díaz Garrido
+  Description: Template used by ProfileDetailView to render a single Profile.
+               Inherits from mini_insta/base.html and displays the profile image,
+               username, optional display_name, and bio_text, plus a link back
+               to the profiles list.
+-->
+
 {% extends "mini_insta/base.html" %}
 
 {% block title %}{{ profile.display_name|default:profile.username }} · Profile{% endblock %}
@@ -10,10 +18,14 @@
       class="profile-image"
     >
     <h2>@{{ profile.username }}</h2>
+
     {% if profile.display_name %}
       <p class="muted">{{ profile.display_name }}</p>
     {% endif %}
-    {% if profile.bio %}<p>{{ profile.bio }}</p>{% endif %}
+
+    {% if profile.bio_text %}
+      <p>{{ profile.bio_text }}</p>
+    {% endif %}
   </article>
 
   <p><a href="{% url 'mini_insta:show_all_profiles' %}">&larr; Back to all profiles</a></p>
