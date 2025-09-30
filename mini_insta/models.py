@@ -6,6 +6,7 @@
 
 
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class Profile(models.Model):
@@ -21,3 +22,42 @@ class Profile(models.Model):
     def __str__(self):
         "Return a string representation of this model instance"
         return f'{self.username}' 
+    
+    def get_absolute_url(self):
+        "Return a URL to display one instance of this object"
+        return reverse('article', kwargs={"pk": self.pk})
+    
+    def get_all_comments(self):
+        "Return a QuerySet of comments about this article"
+        comments = Comment.objects.filter(article=self)
+        return comments
+    
+class Post(models.Model):
+    "Encapsulate the idea of a Post for a Profile"
+    
+    # data attributes for the Post:
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    caption = models.TextField(blank=False)
+    published = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        "Return a string representation of this object"
+        return f'{self.text}'
+    
+    
+    # DESPUES DE ESTO HAY QUE HACER 
+    # python manage.py makemigrations
+    # python manage.py migrate
+    # python manage.py runserver
+    
+class Photo(models.Model):
+    "Encapsulates the idea of a Photo for a Post"
+    
+    # data attributes for the Photo:
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    image_url=models.URLField(blank=True)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        "Return a string representation of this object"
+        return f'{self.text}'

@@ -1,0 +1,16 @@
+{% extends "mini_insta/base.html" %}
+
+{% block content %}
+<h1>Create a new Comment</h1>
+
+
+<form action="{% url 'create_comment' %}" method="POST">
+    {% csrf_token %}
+    <table>
+    {{form.as_table}}
+    </table>
+
+    <input type='submit' name="submit" value="Submit">
+</form>
+
+{%endblock%}

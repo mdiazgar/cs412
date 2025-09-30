@@ -6,8 +6,7 @@
     
 from django.urls import path
 from django.conf import settings
-from .views import ProfileListView
-from .views import ProfileDetailView
+from .views import *
 from . import views
 
 app_name = "mini_insta"
@@ -15,4 +14,6 @@ app_name = "mini_insta"
 urlpatterns = [
     path('', views.ProfileListView.as_view(), name="show_all_profiles"), 
     path("profile/<int:pk>/", ProfileDetailView.as_view(), name="show_profile")
+   # path('article/create', CreateArticleView.as_view(), name="create_article")
+   # path('create_comment', CreateCommentView.as_view(), name="create_comment"), 
 ]

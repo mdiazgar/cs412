@@ -7,7 +7,10 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.generic import DetailView
+from django.views.generic import CreateView
 from .models import Profile
+# from .forms import CreateArticleForm, CreateCommentForm
+from django.urls import reverse
 # Create your views here.
 
 class ProfileListView(ListView):
@@ -22,3 +25,20 @@ class ProfileDetailView(DetailView):
     model = Profile
     template_name = "mini_insta/show_profile.html"
     context_object_name = "profile"
+    
+# class CreateArticleView(CreateView):
+#     '''A view to handle the creation of a new article
+#     1) Display the HTML for to user (GET)
+#     2) Process the form submission and store the new Article object (POST)'''
+#     form_class = CreateArticleForm
+#     template_name = "blog/create_article_form.html"
+    
+# class CreateCommentView(CreateView):
+#     '''A view to handle creation of a new Comment on an Article'''
+#     form_class = CreateCommentForm
+#     template_name = 'blog/create_comment_form.html'
+    
+#     def get_success_url(self):
+#         '''Provide a URL to redirect to after creating a new Comment'''
+#         #create and return URL
+#         return reverse('show_all')
