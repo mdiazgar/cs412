@@ -1,0 +1,39 @@
+{# templates/mini_insta/show_post.html #}
+{% extends "mini_insta/base.html" %}
+{% load static %}
+
+{% block title %}Post {{ post.pk }}{% endblock %}
+
+{% block content %}
+  <article class="post-detail">
+    <h2>Post #{{ post.pk }}</h2>
+    <p class="muted">Published: {{ post.published }}</p>
+    <p>{{ post.caption }}</p>
+
+    <hr>
+
+    <section class="photo-grid">
+      {% if photos %}
+        <div class="grid">
+          {% for photo in photos %}
+            <div class="cell">
+              <img src="{{ photo.image_url }}" alt="Photo {{ forloop.counter }} for Post {{ post.pk }}">
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="muted">No photos for this post.</p>
+      {% endif %}
+    </section>
+
+    <p style="margin-top:1rem;">
+      <a href="{{ post.profile.get_absolute_url }}">&larr; Back to profile</a>
+    </p>
+  </article>
+
+  <style>
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .cell img { width: 100%; height: auto; display: block; border-radius: 8px; }
+    .muted { color: #666; font-size: 0.95rem; }
+  </style>
+{% endblock %}

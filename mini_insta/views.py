@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.views.generic import CreateView
-from .models import Profile
+from .models import Profile, Post, Photo
 # from .forms import CreateArticleForm, CreateCommentForm
 from django.urls import reverse
 # Create your views here.
@@ -26,12 +26,13 @@ class ProfileDetailView(DetailView):
     template_name = "mini_insta/show_profile.html"
     context_object_name = "profile"
     
-# class CreateArticleView(CreateView):
-#     '''A view to handle the creation of a new article
-#     1) Display the HTML for to user (GET)
-#     2) Process the form submission and store the new Article object (POST)'''
-#     form_class = CreateArticleForm
-#     template_name = "blog/create_article_form.html"
+class PostDetailView(DetailView):
+    '''A view to handle the creation of a new article
+    1) Display the HTML for to user (GET)
+    2) Process the form submission and store the new Article object (POST)'''
+    model = Post
+    template_name = "mini_insta/show_post.html"  # required name
+    context_object_name = "post"
     
 # class CreateCommentView(CreateView):
 #     '''A view to handle creation of a new Comment on an Article'''

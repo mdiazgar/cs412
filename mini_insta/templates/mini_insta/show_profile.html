@@ -28,16 +28,26 @@
     {% endif %}
   </article>
 
-    <!-- Display the comments about this article -->
-    <!-- {{article.get_all_comments}} -->
-     {% for comment in article.get_all_comments%}
-        <div>
-            <strong> by {{comment.author}} at {{comment.published}} </strong>
-            <p>
-                {{comment.text}}
-            </p>
-        </div>
-    {% endfor %}
+    <!-- Display the posts about this profile -->
+    <!-- {{post.get_all_posts}} -->
+ {% for post in profile.get_all_posts %}
+    <div class="post">
+      <strong>by {{ post.profile.username|default:post.profile }} · {{ post.published }}</strong>
+      <p>{{ post.caption }}</p>
+
+      {# first photo if any; else fallback #}
+      {% with first_photo=post.get_all_photos|first %}
+        {% if first_photo %}
+          <img src="{{ first_photo.image_url }}" alt="Photo for this post" class="post-photo">
+        {% else %}
+        <img src="https://static.vecteezy.com/system/resources/previews/022/059/000/non_2x/no-image-available-icon-vector.jpg"
+         alt="No image available" class="post-photo">
+  {% endif %}
+      {% endwith %}
+    </div>
+  {% empty %}
+    <p class="muted">No posts yet.</p>
+  {% endfor %}
 
 
   <p><a href="{% url 'mini_insta:show_all_profiles' %}">&larr; Back to all profiles</a></p>

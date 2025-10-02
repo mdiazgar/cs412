@@ -13,7 +13,7 @@ app_name = "mini_insta"
 
 urlpatterns = [
     path('', views.ProfileListView.as_view(), name="show_all_profiles"), 
-    path("profile/<int:pk>/", ProfileDetailView.as_view(), name="show_profile")
-   # path('article/create', CreateArticleView.as_view(), name="create_article")
+    path("profile/<int:pk>/", ProfileDetailView.as_view(), name="show_profile"),
+    path("post/<int:pk>/", PostDetailView.as_view(), name="show_post"),
    # path('create_comment', CreateCommentView.as_view(), name="create_comment"), 
 ]
