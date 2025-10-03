@@ -13,18 +13,19 @@
     <hr>
 
     <section class="photo-grid">
-      {% if photos %}
+    {% if photos %}
         <div class="grid">
-          {% for photo in photos %}
+        {% for photo in photos %}
             <div class="cell">
-              <img src="{{ photo.image_url }}" alt="Photo {{ forloop.counter }} for Post {{ post.pk }}">
+            <img src="{{ photo.image_url }}" alt="Photo {{ forloop.counter }} for Post {{ post.pk }}">
             </div>
-          {% endfor %}
+        {% endfor %}
         </div>
-      {% else %}
-        <p class="muted">No photos for this post.</p>
-      {% endif %}
+    {% else %}
+        <p class="muted">Post loaded!</p>
+    {% endif %}
     </section>
+
 
     <p style="margin-top:1rem;">
   <a href="{% url 'mini_insta:show_profile' post.profile.pk %}">&larr; Back to profile</a>
