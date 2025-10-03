@@ -4,10 +4,12 @@
 #   - ProfileListView: lists all Profile records using show_all_profiles.html
 #   - ProfileDetailView: displays a single Profile using show_profile.html
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.views.generic import CreateView
+from .forms import CreatePostForm
+
 from .models import Profile, Post, Photo
 # from .forms import CreateArticleForm, CreateCommentForm
 from django.urls import reverse
@@ -34,12 +36,29 @@ class PostDetailView(DetailView):
     template_name = "mini_insta/show_post.html"  # required name
     context_object_name = "post"
     
-# class CreateCommentView(CreateView):
-#     '''A view to handle creation of a new Comment on an Article'''
-#     form_class = CreateCommentForm
-#     template_name = 'blog/create_comment_form.html'
-    
-#     def get_success_url(self):
-#         '''Provide a URL to redirect to after creating a new Comment'''
-#         #create and return URL
-#         return reverse('show_all')
+class CreatePostView(CreateView):
+    template_name = "mini_insta/create_post_form.html"
+    form_class = CreatePostForm
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["profile"] = get_object_or_404(Profile, pk=self.kwargs["pk"])
+        return ctx
+
+    def form_valid(self, form):
+        profile = get_object_or_404(Profile, pk=self.kwargs["pk"])
+
+        post = form.save(commit=False)
+        post.profile = profile
+        post.save()
+
+        image_url = form.cleaned_data.get("image_url")
+        if image_url:
+            Photo.objects.create(post=post, image_url=image_url)
+
+        self.object = post
+        return super().form_valid(form)   
+
+    def get_success_url(self):
+        # Use the object created in form_valid
+        return reverse("mini_insta:show_post", kwargs={"pk": self.object.pk})

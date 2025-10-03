@@ -1,0 +1,49 @@
+{% extends "mini_insta/base.html" %}
+
+{% block title %}Create Post{% endblock %}
+
+{% block content %}
+  <h2>Create a new Post for @{{ profile.username }}</h2>
+
+  {# IMPORTANT: action must include the profile pk from context #}
+  <form method="post" action="{% url 'mini_insta:create_post' profile.pk %}">
+    {% csrf_token %}
+
+    {# Caption (Post model field) #}
+    <div class="form-row">
+      <label for="id_caption">Caption</label>
+      <textarea id="id_caption"
+                name="caption"
+                rows="4"
+                required
+                placeholder="Write a caption…">{{ form.caption.value|default_if_none:'' }}</textarea>
+      {% if form.caption.errors %}
+        <div class="field-errors">{{ form.caption.errors }}</div>
+      {% endif %}
+    </div>
+
+    {# Image URL (NOT a Post field; extra input to create one Photo) #}
+    <div class="form-row">
+      <label for="id_image_url">Image URL</label>
+      <input type="url"
+             id="id_image_url"
+             name="image_url"
+             placeholder="https://example.com/image.jpg"
+             value="{{ request.POST.image_url|default:'' }}">
+    </div>
+
+    <div class="form-actions" style="margin-top:1rem;">
+      <button type="submit">Create Post</button>
+      <a href="{% url 'mini_insta:show_profile' profile.pk %}" class="btn-link">Cancel</a>
+    </div>
+  </form>
+
+  <style>
+    .form-row { margin: .8rem 0; display: grid; gap: .35rem; }
+    .form-row label { font-weight: 600; }
+    textarea, input[type="url"] { width: 100%; padding: .55rem; border: 1px solid #ccc; border-radius: 6px; }
+    .field-errors { color: #b00020; }
+    .hint { color: #666; font-size: .9rem; margin: 0; }
+    .btn-link { margin-left: .6rem; }
+  </style>
+{% endblock %}

@@ -30,24 +30,26 @@
 
     <!-- Display the posts about this profile -->
     <!-- {{post.get_all_posts}} -->
- {% for post in profile.get_all_posts %}
-    <div class="post">
-      <strong>by {{ post.profile.username|default:post.profile }} · {{ post.published }}</strong>
-      <p>{{ post.caption }}</p>
+{% for post in profile.get_all_posts %}
+  <div class="post">
+    <strong>by {{ post.profile.username|default:post.profile }} · {{ post.published }}</strong>
+    <p>{{ post.caption }}</p>
 
-      {# first photo if any; else fallback #}
-      {% with first_photo=post.get_all_photos|first %}
-        {% if first_photo %}
-          <img src="{{ first_photo.image_url }}" alt="Photo for this post" class="post-photo">
+        {% with photos=post.get_all_photos %}
+        {% if photos %}
+            <div class="photo-grid">
+            {% for photo in photos %}
+                <img src="{{ photo.image_url }}" alt="Photo {{ forloop.counter }} for this post" class="post-photo">
+            {% endfor %}
+            </div>
         {% else %}
-        <img src="https://static.vecteezy.com/system/resources/previews/022/059/000/non_2x/no-image-available-icon-vector.jpg"
-         alt="No image available" class="post-photo">
-  {% endif %}
-      {% endwith %}
+            <img src="https://placehold.co/600x400?text=No+Image" alt="No image available" class="post-photo">
+        {% endif %}
+        {% endwith %}
     </div>
-  {% empty %}
+    {% empty %}
     <p class="muted">No posts yet.</p>
-  {% endfor %}
+    {% endfor %}
 
 
   <p><a href="{% url 'mini_insta:show_all_profiles' %}">&larr; Back to all profiles</a></p>

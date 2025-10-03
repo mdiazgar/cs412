@@ -1,20 +1,13 @@
 from django import forms
-from .models import Post
-from .models import Photo
+from .models import *
 
-# class CreateArticleForm(forms.ModelForm):
-#     '''A form to add a picture to the database'''
+class CreatePostForm(forms.ModelForm):
+    '''A form to add a picture to the database'''
+    image_url = forms.URLField(required=False, label="Image URL")
     
-#     class Meta:
-#         '''Associate this form with a model from our database'''
-#         model = Article
-#         fields = ['author', 'title', 'text', 'image_url']
+    class Meta:
+        '''Associate this form with a model from our database'''
+        model = Post
+        fields = ['caption']
         
-# class CreateCommentForm(form.ModelForm):
-#     '''A form to add a Comment about an Article'''
-    
-#     class Meta:
-#         '''associate this form with a model from our database'''
-#         model = Comment
-#         fields = ['article', 'author', 'text']
-        
+
