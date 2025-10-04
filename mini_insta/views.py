@@ -36,6 +36,11 @@ class PostDetailView(DetailView):
     template_name = "mini_insta/show_post.html"  # required name
     context_object_name = "post"
     
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["photos"] = self.object.get_all_photos()
+        return ctx
+    
 class CreatePostView(CreateView):
     template_name = "mini_insta/create_post_form.html"
     form_class = CreatePostForm
@@ -52,12 +57,12 @@ class CreatePostView(CreateView):
         post.profile = profile
         post.save()
 
-        image_url = form.cleaned_data.get("image_url")
+        image_url = (self.request.POST.get("image_url") or "").strip()
         if image_url:
             Photo.objects.create(post=post, image_url=image_url)
 
         self.object = post
-        return super().form_valid(form)   
+        return super().form_valid(form)  
 
     def get_success_url(self):
         # Use the object created in form_valid

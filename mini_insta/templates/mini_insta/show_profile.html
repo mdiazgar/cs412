@@ -28,29 +28,39 @@
     {% endif %}
   </article>
 
-    <!-- Display the posts about this profile -->
-    <!-- {{post.get_all_posts}} -->
-{% for post in profile.get_all_posts %}
-  <div class="post">
-    <strong>by {{ post.profile.username|default:post.profile }} · {{ post.published }}</strong>
-    <p>{{ post.caption }}</p>
+  {% for post in profile.get_all_posts %}
+    <div class="post">
+      <strong>by {{ post.profile.username|default:post.profile }} · {{ post.published }}</strong>
 
-        {% with photos=post.get_all_photos %}
-        {% if photos %}
-            <div class="photo-grid">
-            {% for photo in photos %}
-                <img src="{{ photo.image_url }}" alt="Photo {{ forloop.counter }} for this post" class="post-photo">
-            {% endfor %}
-            </div>
+      <p>
+        <a href="{% url 'mini_insta:show_post' post.pk %}">
+          {{ post.caption }}
+        </a>
+      </p>
+
+      {% with first_photo=post.get_all_photos|first %}
+        {% if first_photo %}
+            <a href="{% url 'mini_insta:show_post' post.pk %}">
+            <img src="{{ first_photo.image_url }}"
+                alt="First photo for this post"
+                class="post-photo">
+            </a>
         {% else %}
-            <img src="https://placehold.co/600x400?text=No+Image" alt="No image available" class="post-photo">
+            <a href="{% url 'mini_insta:show_post' post.pk %}">
+            <img src="https://placehold.co/600x400?text=No+Image"
+                alt="No image available"
+                class="post-photo">
+            </a>
         {% endif %}
         {% endwith %}
+
     </div>
-    {% empty %}
+  {% empty %}
     <p class="muted">No posts yet.</p>
-    {% endfor %}
+  {% endfor %}
 
-
-  <p><a href="{% url 'mini_insta:show_all_profiles' %}">&larr; Back to all profiles</a></p>
+  <p style="margin-top:1rem;">
+    <a href="{% url 'mini_insta:show_all_profiles' %}">&larr; Back to all profiles</a>
+  </p>
 {% endblock %}
+
