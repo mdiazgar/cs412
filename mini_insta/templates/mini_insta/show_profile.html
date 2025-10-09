@@ -39,14 +39,14 @@
       </p>
 
       {% with first_photo=post.get_all_photos|first %}
-        {% if first_photo %}
-            <a href="{% url 'mini_insta:show_post' post.pk %}">
-            <img src="{{ first_photo.image_url }}"
-                alt="First photo for this post"
+        {% if first_photo and first_photo.get_image_url %}
+            <a href="{% url 'mini_insta:show_post' pk=post.pk %}">
+            <img src="{{ first_photo.get_image_url }}"
+                alt="First photo for Post {{ post.pk }}"
                 class="post-photo">
             </a>
         {% else %}
-            <a href="{% url 'mini_insta:show_post' post.pk %}">
+            <a href="{% url 'mini_insta:show_post' pk=post.pk %}">
             <img src="https://placehold.co/600x400?text=No+Image"
                 alt="No image available"
                 class="post-photo">

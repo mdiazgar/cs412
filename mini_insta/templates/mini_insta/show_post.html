@@ -7,28 +7,31 @@
 {% block content %}
   <article class="post-detail">
     <h2>Post #{{ post.pk }}</h2>
-    <p class="muted">Published: {{ post.published }}</p>
-    <p>{{ post.caption }}</p>
+    {% if post.published %}<p class="muted">Published: {{ post.published }}</p>{% endif %}
+    {% if post.caption %}<p>{{ post.caption }}</p>{% endif %}
 
     <hr>
 
     <section class="photo-grid">
-    {% if photos %}
-        <div class="grid">
-        {% for photo in photos %}
-            <div class="cell">
-            <img src="{{ photo.image_url }}" alt="Photo {{ forloop.counter }} for Post {{ post.pk }}">
-            </div>
-        {% endfor %}
-        </div>
-    {% else %}
-        <p class="muted">Post loaded!</p>
-    {% endif %}
+      {% with items=photos|default:post.photos.all %}
+        {% if items %}
+          <div class="grid">
+            {% for photo in items %}
+              {% if photo.get_image_url %}
+                <div class="cell">
+                  <img src="{{ photo.get_image_url }}" alt="Photo {{ forloop.counter }} for Post {{ post.pk }}">
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="muted">No photos yet.</p>
+        {% endif %}
+      {% endwith %}
     </section>
 
-
     <p style="margin-top:1rem;">
-  <a href="{% url 'mini_insta:show_profile' post.profile.pk %}">&larr; Back to profile</a>
+      <a href="{% url 'mini_insta:show_profile' pk=post.profile.pk %}">&larr; Back to profile</a>
     </p>
   </article>
 
@@ -38,3 +41,4 @@
     .muted { color: #666; font-size: 0.95rem; }
   </style>
 {% endblock %}
+

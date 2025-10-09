@@ -29,11 +29,11 @@ class ProfileDetailView(DetailView):
     context_object_name = "profile"
     
 class PostDetailView(DetailView):
-    '''A view to handle the creation of a new article
+    '''A view to handle the creation of a new post
     1) Display the HTML for to user (GET)
-    2) Process the form submission and store the new Article object (POST)'''
+    2) Process the form submission and store the new Post object (POST)'''
     model = Post
-    template_name = "mini_insta/show_post.html"  # required name
+    template_name = "mini_insta/show_post.html"  
     context_object_name = "post"
     
     def get_context_data(self, **kwargs):
@@ -53,17 +53,21 @@ class CreatePostView(CreateView):
     def form_valid(self, form):
         profile = get_object_or_404(Profile, pk=self.kwargs["pk"])
 
+        # create Post
         post = form.save(commit=False)
         post.profile = profile
         post.save()
 
+        files = self.request.FILES.getlist('files')  
+        for f in files:
+            Photo.objects.create(post=post, image_file=f)
+            
         image_url = (self.request.POST.get("image_url") or "").strip()
         if image_url:
             Photo.objects.create(post=post, image_url=image_url)
 
         self.object = post
-        return super().form_valid(form)  
+        return redirect(self.get_success_url())
 
     def get_success_url(self):
-        # Use the object created in form_valid
         return reverse("mini_insta:show_post", kwargs={"pk": self.object.pk})
