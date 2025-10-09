@@ -8,25 +8,30 @@
 
 {% extends "mini_insta/base.html" %}
 
-{% block title %}{{ profile.display_name|default:profile.username }} · Profile{% endblock %}
+    {% block title %}{{ profile.display_name|default:profile.username }} · Profile{% endblock %}
 
-{% block content %}
-  <article class="profile-detail">
-    <img
-      src="{{ profile.profile_image_url }}"
-      alt="{{ profile.display_name|default:profile.username }}'s profile image"
-      class="profile-image"
-    >
-    <h2>@{{ profile.username }}</h2>
+    {% block content %}
+    <article class="profile-detail">
+        <img
+        src="{{ profile.profile_image_url }}"
+        alt="{{ profile.display_name|default:profile.username }}'s profile image"
+        class="profile-image"
+        >
+        <h2>@{{ profile.username }}</h2>
 
-    {% if profile.display_name %}
-      <p class="muted">{{ profile.display_name }}</p>
-    {% endif %}
+        <p style="margin:.5rem 0 1rem;">
+            <a class="button" href="{% url 'mini_insta:update_profile' pk=profile.pk %}">Update Profile</a>
+        </p>
 
-    {% if profile.bio_text %}
-      <p>{{ profile.bio_text }}</p>
-    {% endif %}
-  </article>
+
+        {% if profile.display_name %}
+        <p class="muted">{{ profile.display_name }}</p>
+        {% endif %}
+
+        {% if profile.bio_text %}
+        <p>{{ profile.bio_text }}</p>
+        {% endif %}
+    </article>
 
   {% for post in profile.get_all_posts %}
     <div class="post">

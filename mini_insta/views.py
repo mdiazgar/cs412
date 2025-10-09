@@ -70,7 +70,7 @@ class CreatePostView(CreateView):
     def get_success_url(self):
         return reverse("mini_insta:show_post", kwargs={"pk": self.object.pk})
     
-class UpdatePorfileView(UpdateView):
+class UpdateProfileView(UpdateView):
     model = Profile
-    template = "mini_insta/update_profile_form.html"
+    template_name = "mini_insta/update_profile_form.html"
     form_class = UpdateProfileForm
