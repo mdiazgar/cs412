@@ -11,4 +11,11 @@ class CreatePostForm(forms.ModelForm):
         model = Post
         fields = ['caption']
         
+        
+class UpdateProfileForm(forms.ModelForm):
+    '''A form to update the profile'''
+    class Meta:
+        model = Profile
+        exclude = ("username", "join_date")
+       
 

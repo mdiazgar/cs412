@@ -5,10 +5,8 @@
 #   - ProfileDetailView: displays a single Profile using show_profile.html
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView
-from django.views.generic import DetailView
-from django.views.generic import CreateView
-from .forms import CreatePostForm
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from .forms import CreatePostForm, UpdateProfileForm
 
 from .models import Profile, Post, Photo
 # from .forms import CreateArticleForm, CreateCommentForm
@@ -71,3 +69,8 @@ class CreatePostView(CreateView):
 
     def get_success_url(self):
         return reverse("mini_insta:show_post", kwargs={"pk": self.object.pk})
+    
+class UpdatePorfileView(UpdateView):
+    model = Profile
+    template = "mini_insta/update_profile_form.html"
+    form_class = UpdateProfileForm
