@@ -1,0 +1,23 @@
+{% extends "mini_insta/base.html" %}
+
+{% block title %}Edit Post #{{ object.pk }}{% endblock %}
+
+{% block content %}
+  <h2>Edit Post #{{ object.pk }}</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="field">
+      {{ form.caption.label_tag }}
+      {{ form.caption }}
+      {{ form.caption.errors }}
+    </div>
+
+    <div style="margin-top:1rem;">
+      <button type="submit">Save</button>
+      <a href="{% url 'mini_insta:show_post' pk=object.pk %}">Cancel</a>
+    </div>
+  </form>
+{% endblock %}
