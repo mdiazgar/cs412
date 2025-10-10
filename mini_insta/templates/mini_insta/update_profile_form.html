@@ -17,10 +17,11 @@
         </div>
         {% endfor %}
 
-        <div class="actions" style="margin-top:1rem;">
-        <button type="submit">Update</button>
-        <a class="button-outline" href="{% url 'mini_insta:update_profile' pk=object.pk %}">Cancel</a>
+        <div class="row gap-sm" style="margin-top:1rem">
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a class="btn btn-outline" href="{% url 'mini_insta:show_profile' pk=object.pk %}">Cancel</a>
         </div>
+
     </form>
 
     <style>

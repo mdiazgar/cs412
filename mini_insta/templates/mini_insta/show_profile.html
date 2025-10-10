@@ -8,33 +8,33 @@
 
 {% extends "mini_insta/base.html" %}
 
-    {% block title %}{{ profile.display_name|default:profile.username }} · Profile{% endblock %}
+{% block title %}{{ profile.display_name|default:profile.username }} Profile{% endblock %}
 
-    {% block content %}
-    <article class="profile-detail">
-        <img
+{% block content %}
+  <article class="profile-detail card">
+    <div class="row">
+      <img
         src="{{ profile.profile_image_url }}"
         alt="{{ profile.display_name|default:profile.username }}'s profile image"
-        class="profile-image"
-        >
-        <h2>@{{ profile.username }}</h2>
+        class="avatar"
+      >
+      <div class="stack-sm">
+        <h2 style="margin:0">{{ profile.display_name|default:profile.username }}</h2>
+        <div class="muted">@{{ profile.username }}</div>
 
-        <p style="margin:.5rem 0 1rem;">
-            <a class="button" href="{% url 'mini_insta:update_profile' pk=profile.pk %}">Update Profile</a>
-        </p>
+        <a class="btn btn-primary" href="{% url 'mini_insta:update_profile' pk=profile.pk %}">Update Profile</a>
+      </div>
+    </div>
+
+    {% if profile.bio_text %}
+      <p style="margin-top:1rem">{{ profile.bio_text }}</p>
+    {% endif %}
 
 
-        {% if profile.display_name %}
-        <p class="muted">{{ profile.display_name }}</p>
-        {% endif %}
-
-        {% if profile.bio_text %}
-        <p>{{ profile.bio_text }}</p>
-        {% endif %}
-    </article>
+  </article>
 
   {% for post in profile.get_all_posts %}
-    <div class="post">
+    <div class="post" style="margin-top:1rem">
       <strong>by {{ post.profile.username|default:post.profile }} · {{ post.published }}</strong>
 
       <p>
@@ -45,27 +45,22 @@
 
       {% with first_photo=post.get_all_photos|first %}
         {% if first_photo and first_photo.get_image_url %}
-            <a href="{% url 'mini_insta:show_post' pk=post.pk %}">
-            <img src="{{ first_photo.get_image_url }}"
-                alt="First photo for Post {{ post.pk }}"
-                class="post-photo">
-            </a>
+          <a href="{% url 'mini_insta:show_post' pk=post.pk %}">
+            <img src="{{ first_photo.get_image_url }}" alt="First photo for Post {{ post.pk }}" class="rounded">
+          </a>
         {% else %}
-            <a href="{% url 'mini_insta:show_post' pk=post.pk %}">
-            <img src="https://placehold.co/600x400?text=No+Image"
-                alt="No image available"
-                class="post-photo">
-            </a>
+          <a href="{% url 'mini_insta:show_post' pk=post.pk %}">
+            <img src="https://placehold.co/600x400?text=No+Image" alt="No image available" class="rounded">
+          </a>
         {% endif %}
-        {% endwith %}
-
+      {% endwith %}
     </div>
   {% empty %}
     <p class="muted">No posts yet.</p>
   {% endfor %}
 
   <p style="margin-top:1rem;">
-    <a href="{% url 'mini_insta:show_all_profiles' %}">&larr; Back to all profiles</a>
+    <a class="btn btn-outline" href="{% url 'mini_insta:show_all_profiles' %}">&larr; Back to all profiles</a>
   </p>
 {% endblock %}
 

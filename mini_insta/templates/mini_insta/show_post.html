@@ -7,13 +7,10 @@
 {% block content %}
   <article class="post-detail">
     
-    <p style="margin-top:1rem;">
-    <a href="{% url 'mini_insta:show_profile' pk=post.profile.pk %}">&larr; Back to profile</a>
-    |
-    <a href="{% url 'mini_insta:delete_post' pk=post.pk %}">Delete Post</a>
-    |
-    <a href="{% url 'mini_insta:update_post' pk=post.pk %}">Edit Post</a>
+    <p class="row gap-sm" style="margin-top:.5rem;">
+    <a class="btn btn-outline" href="{% url 'mini_insta:show_profile' pk=post.profile.pk %}">&larr; Back to profile</a>
     </p>
+
   
  
 
@@ -43,7 +40,8 @@
     </section>
 
     <p style="margin-top:1rem;">
-      <a href="{% url 'mini_insta:show_profile' pk=post.profile.pk %}">&larr; Back to profile</a>
+    <a class="btn btn-primary"  href="{% url 'mini_insta:delete_post' pk=post.pk %}">Delete Post</a>
+    <a class="btn btn-primary" href="{% url 'mini_insta:update_post' pk=post.pk %}">Edit Post</a>
     </p>
   </article>
 

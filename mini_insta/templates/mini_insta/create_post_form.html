@@ -32,9 +32,9 @@
              multiple>
     </div>
 
-    <div class="form-actions" style="margin-top:1rem;">
-      <button type="submit">Create Post</button>
-      <a href="{% url 'mini_insta:show_profile' profile.pk %}" class="btn-link">Cancel</a>
+    <div class="row gap-sm" style="margin-top:1rem">
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a class="btn btn-outline" href="{% url 'mini_insta:show_profile' pk=profile.pk %}">Cancel</a>
     </div>
   </form>
 

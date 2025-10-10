@@ -1,10 +1,7 @@
-<!-- File: base.html
+<!-- File: base.html 
    Author: María Díaz Garrido
-  Description: Base layout for the mini_insta app. Defines the shared HTML
-               structure (head/body), loads static CSS, renders a global nav,
-               has child templates.
+   Description: Base layout for the mini_insta app.
 -->
-
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -16,24 +13,51 @@
     <link rel="stylesheet" href="{% static 'styles_mini_insta.css' %}">
 
     <style>
+      /* existing */
       body { font-family: system-ui, Arial, sans-serif; margin: 2rem; }
       nav a { margin-right: 1rem; }
       img { max-width: 100%; height: auto; border-radius: 8px; }
       .quote { font-size: 1.5rem; margin: 1rem 0; }
       .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
       .muted { color: #666; }
+
+      /* ---- Mini design system (buttons, avatar, layout helpers) ---- */
+      :root { --purple:#ec4899; --purple-600:#db2777; --gray:#6b7280; }
+
+      /* Avatar */
+      .avatar{width:96px;height:96px;border-radius:9999px;object-fit:cover;
+              border:3px solid var(--purple);display:block}
+      .avatar-sm{width:56px;height:56px;border-width:2px}
+
+      /* Buttons */
+      .btn{display:inline-block;padding:.6rem 1rem;border-radius:.75rem;
+           text-decoration:none;font-weight:600;line-height:1;border:1px solid transparent}
+      .btn-primary{background:var(--purple);color:#fff}
+      .btn-primary:hover{background:var(--purple-600)}
+      .btn-outline{background:#fff;color:var(--purple);border-color:var(--purple)}
+      .btn-outline:hover{background:#f8f5ff}
+      .btn-danger{background:#ef4444;color:#fff}
+      .btn-danger:hover{background:#dc2626}
+
+      /* Layout helpers */
+      .row{display:flex;align-items:center;gap:1rem}
+      .gap-sm{gap:.5rem}
+      .stack-sm > *{margin-bottom:.5rem}
+      .card{padding:1rem;border-radius:1rem;border:1px solid #e5e7eb}
+      .stat{padding:.75rem 1rem;border:2px solid var(--purple);border-radius:.75rem;text-align:center}
+      .stat .val{font-weight:700}
+      img.rounded{border-radius:12px}
     </style>
   </head>
   <body>
     <nav class="bottom-nav">
-  <a href="{% url 'mini_insta:show_all_profiles' %}">Home</a>
-
-  {# Show create-post button only if a profile is in context #}
-  {% if profile %}
-    <a href="{% url 'mini_insta:create_post' profile.pk %}">Create Post</a>
-  {% endif %}
-</nav>
+      <a href="{% url 'mini_insta:show_all_profiles' %}">Home</a>
+      {% if profile %}
+        <a href="{% url 'mini_insta:create_post' profile.pk %}">Create Post</a>
+      {% endif %}
+    </nav>
     <hr />
     {% block content %}{% endblock %}
   </body>
 </html>
+
