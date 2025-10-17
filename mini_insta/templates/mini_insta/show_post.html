@@ -17,6 +17,24 @@
 
     <h2>Post #{{ post.pk }}</h2>
     {% if post.published %}<p class="muted">Published: {{ post.published }}</p>{% endif %}
+
+    {% with likes=post.get_likes like_count=post.get_num_likes %}
+      <p class="muted" style="margin:.25rem 0;">
+        {% if like_count %}
+          {% with first=likes.0.profile %}
+            Liked by
+            <strong>
+              {% if first.username %}@{{ first.username }}{% else %}{{ first }}{% endif %}
+            </strong>
+            {% if like_count > 1 %}
+              and {{ like_count|add:"-1" }} other{{ like_count|add:"-1"|pluralize }}
+            {% endif %}
+          {% endwith %}
+        {% else %}
+          Be the first to like this.
+        {% endif %}
+      </p>
+    {% endwith %}
     {% if post.caption %}<p>{{ post.caption }}</p>{% endif %}
 
     <hr>
@@ -37,6 +55,27 @@
           <p class="muted">No photos yet.</p>
         {% endif %}
       {% endwith %}
+      <hr>
+
+    {% with comments=post.get_all_comments %}
+    <section class="comments">
+      <h3>Comments ({{ comments|length }})</h3>
+
+      <ul class="comment-list">
+        {% for c in comments %}
+          <li class="comment-item">
+            <a href="{% url 'mini_insta:show_profile' pk=c.profile.pk %}">
+              <strong>{{ c.profile }}</strong>
+            </a>
+            <small class="muted">— {{ c.timestamp }}</small><br>
+            {{ c.text }}
+          </li>
+        {% empty %}
+          <li class="muted">No comments yet.</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endwith %}
     </section>
 
     <p style="margin-top:1rem;">
@@ -45,10 +84,15 @@
     </p>
   </article>
 
-  <style>
+    <style>
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
     .cell img { width: 100%; height: auto; display: block; border-radius: 8px; }
     .muted { color: #666; font-size: 0.95rem; }
+
+    .comments { margin-top: 1rem; }
+    .comment-list { list-style: none; padding-left: 0; display: grid; gap: .75rem; }
+    .comment-item { background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: .6rem .8rem; }
   </style>
+
 {% endblock %}
 

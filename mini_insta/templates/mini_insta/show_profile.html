@@ -26,6 +26,16 @@
       </div>
     </div>
 
+    <div class="stats">
+    <a href="{% url 'mini_insta:profile_followers' profile.pk %}">
+      <strong>{{ profile.get_num_followers }}</strong> follower{{ profile.get_num_followers|pluralize }}
+    </a>
+    &nbsp;|&nbsp;
+    <a href="{% url 'mini_insta:profile_following' profile.pk %}">
+      <strong>{{ profile.get_num_following }}</strong> following
+    </a>
+  </div>
+
     {% if profile.bio_text %}
       <p style="margin-top:1rem">{{ profile.bio_text }}</p>
     {% endif %}
