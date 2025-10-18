@@ -122,3 +122,36 @@ class PostFeedListView(ListView):
         ctx = super().get_context_data(**kwargs)
         ctx['profile'] = self.profile
         return ctx
+    
+
+class SearchView(ListView):
+    """Search Profiles and Posts on behalf of a given Profile"""
+    template_name = 'mini_insta/search_results.html'
+    context_object_name = 'posts' 
+
+    def dispatch(self, request, *args, **kwargs):
+        self.profile = Profile.objects.get(pk=kwargs['pk'])
+        self.query = (request.GET.get('q') or '').strip()
+        if not self.query:
+            return render(request, 'mini_insta/search.html', {'profile': self.profile, 'query': self.query})
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return (Post.objects.filter(caption__icontains=self.query).select_related('profile').order_by('-published'))
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+
+        by_username     = Profile.objects.filter(username__icontains=self.query)
+        by_display_name = Profile.objects.filter(display_name__icontains=self.query)
+        by_bio          = Profile.objects.filter(bio_text__icontains=self.query)
+        profiles_qs = (by_username | by_display_name | by_bio).distinct().order_by('display_name', 'username')
+
+        ctx.update({
+            'profile': self.profile,     
+            'query': self.query,         
+            'profiles': profiles_qs,     
+            'posts': ctx.get('posts'),   
+        })
+        return ctx

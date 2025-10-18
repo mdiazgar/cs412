@@ -1,0 +1,57 @@
+{% extends "mini_insta/base.html" %}
+
+{% block title %}Search Results{% endblock title %}
+
+{% block content %}
+<article class="card">
+  <header class="row" style="justify-content: space-between; align-items: center;">
+    <a class="btn btn-outline" href="{% url 'mini_insta:profile_search' pk=profile.pk %}">← Back</a>
+    <h1 style="margin:0;">Search Results</h1>
+  </header>
+  <p class="muted">@{{ profile.username }}</p>
+
+  {% if query %}
+    <h3>Profiles matching the query for `<code>{{ query }}</code>`</h3>
+    <ul class="list">
+      {% for p in profiles %}
+        <li class="row" style="align-items:center; gap:.5rem;">
+          {% if p.profile_image_url %}<img src="{{ p.profile_image_url }}" class="avatar" alt="{{ p }}">{% endif %}
+          <a href="{% url 'mini_insta:show_profile' pk=p.pk %}">{{ p }}</a>
+          <span class="muted">@{{ p.username }}</span>
+        </li>
+      {% empty %}
+        <li class="muted">No matching profiles.</li>
+      {% endfor %}
+    </ul>
+
+    <h3 style="margin-top:1rem;">Posts matching the query for `<code>{{ query }}</code>`</h3>
+    <ul class="list">
+      {% for post in posts %}
+        <li class="card" style="margin:.6rem 0; padding: .75rem;">
+          <div class="row" style="align-items:center; gap:.5rem;">
+            {% if post.profile.profile_image_url %}
+              <img src="{{ post.profile.profile_image_url }}" class="avatar" alt="{{ post.profile }}">
+            {% endif %}
+            <a href="{% url 'mini_insta:show_profile' pk=post.profile.pk %}"><strong>{{ post.profile }}</strong></a>
+            <span class="muted">· {{ post.published }}</span>
+          </div>
+
+          {% with first=post.get_all_photos|first %}
+            {% if first and first.get_image_url %}
+              <a href="{% url 'mini_insta:show_post' pk=post.pk %}">
+                <img src="{{ first.get_image_url }}" alt="Photo for post {{ post.pk }}" class="rounded" style="margin-top:.5rem;">
+              </a>
+            {% endif %}
+          {% endwith %}
+
+          {% if post.caption %}<p style="margin-top:.5rem;">{{ post.caption }}</p>{% endif %}
+        </li>
+      {% empty %}
+        <li class="muted">No matching posts.</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">No query provided.</p>
+  {% endif %}
+</article>
+{% endblock content %}

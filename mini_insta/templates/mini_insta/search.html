@@ -1,0 +1,20 @@
+{% extends "mini_insta/base.html" %}
+
+{% block title %}Search{% endblock title %}
+
+{% block content %}
+<article class="card">
+  <header class="row" style="justify-content: space-between; align-items: center;">
+    <a class="btn btn-outline" href="{% url 'mini_insta:show_profile' pk=profile.pk %}">← Back</a>
+    <h1 style="margin:0;">Search</h1>
+  </header>
+
+  <p class="muted">@{{ profile.username }}</p>
+
+  <form method="get" action="{% url 'mini_insta:profile_search' pk=profile.pk %}">
+    <label for="q" class="muted">Search for text, tags, or people:</label>
+    <textarea id="q" name="q" rows="2" style="width:100%;">{{ query }}</textarea>
+    <button class="btn btn-primary" type="submit" style="margin-top:.5rem;">Search</button>
+  </form>
+</article>
+{% endblock content %}
