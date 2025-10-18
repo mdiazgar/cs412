@@ -23,24 +23,23 @@
         <div class="muted">@{{ profile.username }}</div>
 
         <a class="btn btn-primary" href="{% url 'mini_insta:update_profile' pk=profile.pk %}">Update Profile</a>
+        <a class="btn btn-outline" href="{% url 'mini_insta:profile_feed' pk=profile.pk %}">Go to Feed</a>
       </div>
     </div>
 
     <div class="stats">
-    <a href="{% url 'mini_insta:profile_followers' profile.pk %}">
-      <strong>{{ profile.get_num_followers }}</strong> follower{{ profile.get_num_followers|pluralize }}
-    </a>
-    &nbsp;|&nbsp;
-    <a href="{% url 'mini_insta:profile_following' profile.pk %}">
-      <strong>{{ profile.get_num_following }}</strong> following
-    </a>
-  </div>
+      <a href="{% url 'mini_insta:profile_followers' profile.pk %}">
+        <strong>{{ profile.get_num_followers }}</strong> follower{{ profile.get_num_followers|pluralize }}
+      </a>
+      &nbsp;|&nbsp;
+      <a href="{% url 'mini_insta:profile_following' profile.pk %}">
+        <strong>{{ profile.get_num_following }}</strong> following
+      </a>
+    </div>
 
     {% if profile.bio_text %}
       <p style="margin-top:1rem">{{ profile.bio_text }}</p>
     {% endif %}
-
-
   </article>
 
   {% for post in profile.get_all_posts %}

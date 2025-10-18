@@ -54,6 +54,15 @@ class Profile(models.Model):
         from .models import Follow
         return Follow.objects.filter(follower_profile=self).count()
     
+    def get_post_feed(self, include_self=False):
+        """Return posts from the profiles this user follows"""
+        from .models import Follow, Post  
+
+        followed_ids = (Follow.objects.filter(follower_profile=self).values_list('profile_id', flat=True))
+        qs = Post.objects.filter(profile_id__in=followed_ids)
+
+        return (qs.select_related('profile').order_by('-published'))
+    
 
     
 class Post(models.Model):

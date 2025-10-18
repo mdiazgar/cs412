@@ -1,0 +1,96 @@
+{% extends "mini_insta/base.html" %}
+{% load static %}
+
+{% block title %}Feed for {{ profile }}{% endblock title %}
+
+{% block content %}
+<article class="feed">
+  <header class="feed-header">
+    <a class="btn btn-outline" href="{% url 'mini_insta:show_profile' pk=profile.pk %}">← Back</a>
+    <h1>Feed</h1>
+  </header>
+
+  {% if posts %}
+    <ul class="feed-list">
+      {% for post in posts %}
+        <li class="feed-item">
+          <!-- Author -->
+          <div class="author">
+            <a href="{% url 'mini_insta:show_profile' pk=post.profile.pk %}">
+              {% if post.profile.profile_image_url %}
+                <img class="avatar" src="{{ post.profile.profile_image_url }}" alt="{{ post.profile }}">
+              {% endif %}
+              <span class="name">{{ post.profile }}</span>
+            </a>
+            <span class="time muted">· {{ post.published }}</span>
+          </div>
+
+          <!-- First photo -->
+          {% with first=post.get_all_photos|first %}
+            {% if first and first.get_image_url %}
+              <div class="photo"><img src="{{ first.get_image_url }}" alt="photo for post {{ post.pk }}"></div>
+            {% endif %}
+          {% endwith %}
+
+          <!-- Likes summary -->
+          {% with likes=post.get_likes like_count=post.get_num_likes %}
+            <p class="muted likes">
+              {% if like_count %}
+                {% with first_like=likes.0.profile %}
+                  Liked by <strong>
+                    {% if first_like.username %}@{{ first_like.username }}{% else %}{{ first_like }}{% endif %}
+                  </strong>{% if like_count > 1 %} and {{ like_count|add:"-1" }} other{{ like_count|add:"-1"|pluralize }}{% endif %}.
+                {% endwith %}
+              {% else %}
+                Be the first to like this.
+              {% endif %}
+            </p>
+          {% endwith %}
+
+          <!-- Caption -->
+          {% if post.caption %}
+            <p class="caption">{{ post.caption }}</p>
+          {% endif %}
+
+          <!-- Comments -->
+          {% with comments=post.get_all_comments %}
+            <div class="comments">
+              <h4 class="muted">Comments ({{ comments|length }})</h4>
+              <ul class="comment-list">
+                {% for c in comments %}
+                  <li class="comment">
+                    <a href="{% url 'mini_insta:show_profile' pk=c.profile.pk %}"><strong>{{ c.profile }}</strong></a>
+                    <small class="muted">— {{ c.timestamp }}</small><br>
+                    {{ c.text }}
+                  </li>
+                {% empty %}
+                  <li class="muted">No comments yet.</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endwith %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">No posts in your feed yet.</p>
+  {% endif %}
+</article>
+
+<style>
+  .feed-list { list-style: none; padding: 0; display: grid; gap: 1.25rem; }
+  .feed-item { border: 1px solid #eee; border-radius: 12px; padding: 1rem; background: #fff; }
+  .author { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+  .name { font-weight: 600; }
+  .time { margin-left: .25rem; }
+  .photo img { width: 100%; height: auto; border-radius: 8px; display: block; }
+  .caption { margin-top: .5rem; }
+  .likes { margin: .4rem 0; }
+  .comments { margin-top: .5rem; }
+  .comment-list { list-style: none; padding-left: 0; display: grid; gap: .5rem; }
+  .comment { background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: .5rem .6rem; }
+  .muted { color: #666; font-size: .95rem; }
+</style>
+{% endblock content %}
+
