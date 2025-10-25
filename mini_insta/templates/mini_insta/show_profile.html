@@ -22,8 +22,10 @@
         <h2 style="margin:0">{{ profile.display_name|default:profile.username }}</h2>
         <div class="muted">@{{ profile.username }}</div>
 
-        <a class="btn btn-primary" href="{% url 'mini_insta:update_profile' pk=profile.pk %}">Update Profile</a>
-        <a class="btn btn-outline" href="{% url 'mini_insta:profile_feed' pk=profile.pk %}">Go to Feed</a>
+        {% if request.user.is_authenticated %}
+        <a class="btn btn-primary" href="{% url 'mini_insta:update_profile' %}">Update Profile</a>
+        <a class="btn btn-outline" href="{% url 'mini_insta:profile_feed' %}">Go to Feed</a>
+        {% endif %}
       </div>
     </div>
 

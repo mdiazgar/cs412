@@ -6,7 +6,7 @@
   <h2>Create a new Post for @{{ profile.username }}</h2>
 
   <form method="post"
-        action="{% url 'mini_insta:create_post' profile.pk %}"
+        action="{% url 'mini_insta:create_post' %}"
         enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.non_field_errors }}

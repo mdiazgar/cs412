@@ -5,7 +5,7 @@
 {% block content %}
 <article class="card">
   <header class="row" style="justify-content: space-between; align-items: center;">
-    <a class="btn btn-outline" href="{% url 'mini_insta:profile_search' pk=profile.pk %}">← Back</a>
+    <a class="btn btn-outline" href="{% url 'mini_insta:profile_search' %}">← Back</a>
     <h1 style="margin:0;">Search Results</h1>
   </header>
   <p class="muted">@{{ profile.username }}</p>

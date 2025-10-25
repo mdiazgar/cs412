@@ -29,15 +29,46 @@
               border:3px solid var(--purple);display:block}
       .avatar-sm{width:56px;height:56px;border-width:2px}
 
-      /* Buttons */
-      .btn{display:inline-block;padding:.6rem 1rem;border-radius:.75rem;
-           text-decoration:none;font-weight:600;line-height:1;border:1px solid transparent}
-      .btn-primary{background:var(--purple);color:#fff}
-      .btn-primary:hover{background:var(--purple-600)}
-      .btn-outline{background:#fff;color:var(--purple);border-color:var(--purple)}
-      .btn-outline:hover{background:#f8f5ff}
-      .btn-danger{background:#ef4444;color:#fff}
-      .btn-danger:hover{background:#dc2626}
+      /* Base button FIRST */
+      a.btn, button.btn, input[type="submit"].btn {
+        display: inline-block;
+        font: inherit;
+        padding: 0.55rem 1.2rem;
+        border-radius: 0.5rem;
+        border: 1.8px solid transparent;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        background: none;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      /* Variants */
+      .btn.btn-primary {
+        background: var(--purple);
+        color: #fff;
+        border-color: var(--purple);
+        box-shadow: 0 2px 6px rgba(236,72,153,.25);
+      }
+      .btn.btn-primary:hover {
+        background: var(--purple-600);
+        border-color: var(--purple-600);
+        box-shadow: 0 3px 10px rgba(236,72,153,.35);
+      }
+
+      .btn.btn-outline {
+        background: transparent;
+        color: var(--purple);
+        border-color: var(--purple);
+      }
+      .btn.btn-outline:hover {
+        background: var(--purple);
+        color: #fff;
+        border-color: var(--purple);
+        box-shadow: 0 2px 6px rgba(236,72,153,.25);
+      }
 
       /* Layout helpers */
       .row{display:flex;align-items:center;gap:1rem}
@@ -48,31 +79,50 @@
       .stat .val{font-weight:700}
       img.rounded{border-radius:12px}
 
-      /* Sticky bottom nav (apply to your .bottom-nav) */
+      /* Sticky bottom nav */
       .bottom-nav {
         position: sticky;
         bottom: 0;
         display: flex;
         gap: 1rem;
-        justify-content: space-around;
+        align-items: center;
+        justify-content: space-between;
         padding: .6rem 1rem;
         background: #fff;
         border-top: 1px solid #eee;
         z-index: 10;
       }
+      .nav-left, .nav-right { display:flex; gap:1rem; align-items:center; }
       .bottom-nav a { text-decoration: none; font-size: 1.05rem; }
     </style>
   </head>
   <body>
 
     <nav class="bottom-nav">
-      <a href="{% url 'mini_insta:show_all_profiles' %}">Home</a>
+      <div class="nav-left">
+        <a href="{% url 'mini_insta:show_all_profiles' %}">Home</a>
 
-      {% if profile %}
-        <a href="{% url 'mini_insta:create_post' profile.pk %}">Create Post</a>
+        {% if request.user.is_authenticated %}
+          <!-- no pk versions -->
+          <a href="{% url 'mini_insta:create_post' %}">Create Post</a>
+          <a href="{% url 'mini_insta:profile_search' %}">Search</a>
+        {% endif %}
+      </div>
 
-        <a href="{% url 'mini_insta:profile_search' pk=profile.pk %}">Search</a>
-      {% endif %}
+      <div class="nav-right">
+        {% if request.user.is_authenticated %}
+          <form method="post" action="{% url 'logout' %}" style="display:inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline">Logout</button>
+          </form>
+          <span class="muted">Logged in user: {{ request.user.username }}.</span>
+        {% else %}
+          <!-- (4) Show “Create Profile” link when not logged in -->
+          <a class="btn btn-outline" href="{% url 'mini_insta:create_profile' %}">Create Profile</a>
+          <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+          <span class="muted">Not logged in.</span>
+        {% endif %}
+      </div>
     </nav>
 
     <hr />
@@ -80,5 +130,6 @@
 
   </body>
 </html>
+
 
 
