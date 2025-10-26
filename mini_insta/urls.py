@@ -26,6 +26,10 @@ urlpatterns = [
     path('profile/feed', PostFeedListView.as_view(), name='profile_feed'),
     path('profile/search', SearchView.as_view(), name='profile_search'),
     path("create_profile/", CreateProfileView.as_view(), name="create_profile"),
+    path("profile/<int:pk>/follow", FollowCreateView.as_view(), name="profile_follow"),
+    path("profile/<int:pk>/delete_follow", FollowDeleteView.as_view(), name="profile_delete_follow"),
+    path("post/<int:pk>/like", LikeCreateView.as_view(), name="post_like"),
+    path("post/<int:pk>/delete_like", LikeDeleteView.as_view(), name="post_delete_like"),
     ##authorization-related URL
     path('login/', auth_views.LoginView.as_view(template_name='mini_insta/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='mini_insta:show_all_profiles'), name='logout'),

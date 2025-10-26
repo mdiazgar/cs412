@@ -9,6 +9,7 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.db.models import F, Q
 
 
 # Create your models here.
@@ -68,6 +69,10 @@ class Profile(models.Model):
 
         return (qs.select_related('profile').order_by('-published'))
     
+    def is_following(self, other: "Profile") -> bool:
+        from .models import Follow
+        return Follow.objects.filter(follower_profile=self, profile=other).exists()
+    
 
     
 class Post(models.Model):
@@ -99,6 +104,10 @@ class Post(models.Model):
         """Return all number of Likes."""
         from .models import Like
         return Like.objects.filter(post=self).count()
+    
+    def is_liked_by(self, profile: "Profile") -> bool:
+        from .models import Like
+        return Like.objects.filter(post=self, profile=profile).exists()
 
 
     
@@ -133,6 +142,12 @@ class Follow(models.Model):
     follower_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="follower_profile")
     timestamp = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["profile", "follower_profile"], name="unique_follow"),
+            models.CheckConstraint(check=~Q(profile=F('follower_profile')), name="no_self_follow"),
+        ]
+
     def __str__(self):
         return f"{self.follower_profile} follows {self.profile}"
     
@@ -154,6 +169,11 @@ class Like(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='likes')
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='likes_made')
     timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["post", "profile"], name="unique_like"),
+        ]
 
     def __str__(self):
         return f"{self.profile} likes Post #{self.post_id}"

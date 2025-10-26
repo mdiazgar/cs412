@@ -11,11 +11,9 @@ class AuthProfileMixin(LoginRequiredMixin):
 
     def get_current_profile(self):
         user = self.request.user
-        # if you already have a FK Profile.user:
         qs = Profile.objects.filter(user=user).order_by("pk")
         if not qs.exists():
             raise Http404("No Profile associated with this user.")
-        # If multiple rows can exist (e.g., default admin user), pick first:
         return qs.first()
 
     def get_context_data(self, **kwargs):

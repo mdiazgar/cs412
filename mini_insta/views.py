@@ -14,10 +14,14 @@ from django.contrib.auth.forms import UserCreationForm
 from .mixins import AuthProfileMixin, CurrentUserProfileObjectMixin
 
 
-from .models import Profile, Post, Photo
+from .models import Profile, Post, Photo, Follow, Like
 # from .forms import CreateArticleForm, CreateCommentForm
 from django.urls import reverse
 # Create your views here.
+
+def _next_or(request, fallback_url):
+    nxt = request.GET.get("next") or request.POST.get("next")
+    return nxt or fallback_url
 
 class ProfileListView(ListView):
     '''Define a view class to show all profiles'''
@@ -48,12 +52,17 @@ class PostDetailView(DetailView):
     1) Display the HTML for to user (GET)
     2) Process the form submission and store the new Post object (POST)'''
     model = Post
-    template_name = "mini_insta/show_post.html"  
-    context_object_name = "post"
-    
+    template_name = "mini_insta/show_post.html"
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["photos"] = self.object.get_all_photos()
+        me = getattr(self.request.user, "profiles", None)
+        me = me.first() if me else None
+        post = self.object
+        ctx["current_profile"] = me
+        ctx["liked_by_me"] = (
+            bool(me) and post.likes.filter(profile=me).exists()
+        )
         return ctx
     
 class CreatePostView(AuthProfileMixin, CreateView):
@@ -207,3 +216,49 @@ class CreateProfileView(CreateView):
 
     def get_success_url(self):
         return reverse("mini_insta:show_profile", args=[self.object.pk])
+    
+    
+class FollowCreateView(AuthProfileMixin, CreateView):
+    def post(self, request, pk):
+        me = self.get_current_profile()
+        other = get_object_or_404(Profile, pk=pk)
+        if other.pk != me.pk: 
+            Follow.objects.get_or_create(profile=other, follower_profile=me)
+        return redirect(_next_or(request, other.get_absolute_url()))
+
+    def get(self, request, pk):
+        return self.post(request, pk)
+
+
+class FollowDeleteView(AuthProfileMixin, DeleteView):
+    def post(self, request, pk):
+        me = self.get_current_profile()
+        other = get_object_or_404(Profile, pk=pk)
+        Follow.objects.filter(profile=other, follower_profile=me).delete()
+        return redirect(_next_or(request, other.get_absolute_url()))
+
+    def get(self, request, pk):
+        return self.post(request, pk)
+
+
+class LikeCreateView(AuthProfileMixin, CreateView):
+    def post(self, request, pk):
+        me = self.get_current_profile()
+        post = get_object_or_404(Post, pk=pk)
+        if post.profile_id != me.pk:
+            Like.objects.get_or_create(post=post, profile=me)
+        return redirect(request.POST.get("next") or post.get_absolute_url())
+
+    def get(self, request, pk):
+        return self.post(request, pk)
+    
+
+class LikeDeleteView(AuthProfileMixin, DeleteView):
+    def post(self, request, pk):
+        me = self.get_current_profile()
+        post = get_object_or_404(Post, pk=pk)
+        Like.objects.filter(post=post, profile=me).delete()
+        return redirect(request.POST.get("next") or post.get_absolute_url())
+
+    def get(self, request, pk):
+        return self.post(request, pk)

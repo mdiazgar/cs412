@@ -19,22 +19,46 @@
     {% if post.published %}<p class="muted">Published: {{ post.published }}</p>{% endif %}
 
     {% with likes=post.get_likes like_count=post.get_num_likes %}
-      <p class="muted" style="margin:.25rem 0;">
-        {% if like_count %}
-          {% with first=likes.0.profile %}
-            Liked by
-            <strong>
-              {% if first.username %}@{{ first.username }}{% else %}{{ first }}{% endif %}
-            </strong>
-            {% if like_count > 1 %}
-              and {{ like_count|add:"-1" }} other{{ like_count|add:"-1"|pluralize }}
-            {% endif %}
-          {% endwith %}
-        {% else %}
-          Be the first to like this.
+  <p class="muted" style="margin:.25rem 0;">
+    {% if like_count %}
+      {% with first=likes.0.profile %}
+        Liked by
+        <strong>
+          {% if first.username %}@{{ first.username }}{% else %}{{ first }}{% endif %}
+        </strong>
+        {% if like_count > 1 %}
+          and {{ like_count|add:"-1" }} other{{ like_count|add:"-1"|pluralize }}
         {% endif %}
-      </p>
+      {% endwith %}
+    {% else %}
+      Be the first to like this.
+    {% endif %}
+  </p>
+
+  {# --- Like / Unlike controls (only for logged-in users, and not own post) --- #}
+  {% if request.user.is_authenticated %}
+    {% with me=current_profile|default:request.user.profiles.all.0 %}
+      {% if me and me.pk != post.profile_id %}
+        <div class="row gap-sm" style="margin:.25rem 0 1rem;">
+          {% if liked_by_me %}
+            <form action="{% url 'mini_insta:post_delete_like' pk=post.pk %}" method="post" style="display:inline">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <button class="btn btn-outline" type="submit">Unlike</button>
+            </form>
+          {% else %}
+            <form action="{% url 'mini_insta:post_like' pk=post.pk %}" method="post" style="display:inline">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <button class="btn btn-primary" type="submit">Like</button>
+            </form>
+          {% endif %}
+        </div>
+      {% endif %}
     {% endwith %}
+  {% endif %}
+{% endwith %}
+
     {% if post.caption %}<p>{{ post.caption }}</p>{% endif %}
 
     <hr>
@@ -78,10 +102,13 @@
     {% endwith %}
     </section>
 
-    <p style="margin-top:1rem;">
+      {% if request.user.is_authenticated and current_profile.pk == post.profile.pk %}
+      <p style="margin-top:1rem;">
     <a class="btn btn-primary"  href="{% url 'mini_insta:delete_post' pk=post.pk %}">Delete Post</a>
     <a class="btn btn-primary" href="{% url 'mini_insta:update_post' pk=post.pk %}">Edit Post</a>
     </p>
+    {% endif %}
+
   </article>
 
     <style>
