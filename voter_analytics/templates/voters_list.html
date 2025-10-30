@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Voters</title>
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; margin: 1.5rem; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { padding: .55rem .6rem; border-bottom: 1px solid #e5e7eb; text-align: left; }
+      th { background: #f8fafc; font-weight: 600; }
+      .muted { color: #64748b; }
+      .pager { margin-top: 1rem; display: flex; gap: .5rem; align-items: center; }
+      .pager a, .pager span {
+        padding: .35rem .6rem; border: 1px solid #e5e7eb; border-radius: .4rem; text-decoration: none;
+      }
+      .pager .current { background: #f1f5f9; }
+    </style>
+  </head>
+  <body>
+    <h1>Voter Records</h1>
+    <p class="muted">
+      Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }}
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>First</th>
+          <th>Last</th>
+          <th>Street Address</th>
+          <th>Date of Birth</th>
+          <th>Party</th>
+          <th>Voter Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in voters %}
+          <tr>
+            <td>{{ v.first_name }}</td>
+            <td>{{ v.last_name }}</td>
+            <td>
+              {# Compose the street line from your fields #}
+              {{ v.res_street_number }} {{ v.res_street_name }}
+              {% if v.res_apartment %}Apt {{ v.res_apartment }}{% endif %}
+            </td>
+            <td>{{ v.date_of_birth|date:"Y-m-d" }}</td>
+            <td>{{ v.party }}</td>
+            <td>{{ v.voter_score }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" class="muted">No voters found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="pager">
+      {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; First</a>
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% else %}
+        <span class="muted">&laquo; First</span>
+        <span class="muted">Previous</span>
+      {% endif %}
+
+      <span class="current">Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+      {% else %}
+        <span class="muted">Next</span>
+        <span class="muted">Last &raquo;</span>
+      {% endif %}
+    </div>
+  </body>
+</html>
