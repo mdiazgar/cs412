@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Voter Records</title>
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; margin: 1.5rem; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { padding: .55rem .6rem; border-bottom: 1px solid #e5e7eb; text-align: left; }
+      th { background: #f8fafc; font-weight: 600; }
+      .muted { color: #64748b; }
+      .pager { margin-top: 1rem; display: flex; gap: .5rem; align-items: center; }
+      .pager a, .pager span {
+        padding: .35rem .6rem; border: 1px solid #e5e7eb; border-radius: .4rem; text-decoration: none;
+      }
+      .pager .current { background: #f1f5f9; }
+      form.filters { display: grid; gap: .5rem; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-bottom: 1rem; }
+      form.filters label { font-size: .9rem; color: #334155; display: block; }
+      form.filters select { width: 100%; padding: .35rem; }
+      .checkboxes { grid-column: 1 / -1; display: flex; gap: 1rem; flex-wrap: wrap; }
+      .actions { grid-column: 1 / -1; }
+    </style>
+  </head>
+  <body>
+    <h1>Voter Records</h1>
+
+    <form method="get" class="filters">
+      <div>
+        <label>Party</label>
+        {{ form.party }}
+      </div>
+      <div>
+        <label>Min birth year</label>
+        {{ form.min_year }}
+      </div>
+      <div>
+        <label>Max birth year</label>
+        {{ form.max_year }}
+      </div>
+      <div>
+        <label>Voter score</label>
+        {{ form.voter_score }}
+      </div>
+      <div class="actions">
+        <button type="submit">Filter</button>
+        <a href="{% url 'voters' %}">Reset</a>
+      </div>
+      <div class="checkboxes">
+        <strong>Voted in:</strong>
+        {{ form.elections }}
+      </div>
+    </form>
+
+    <p class="muted">
+      Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }}
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>First</th>
+          <th>Last</th>
+          <th>Street Address</th>
+          <th>Date of Birth</th>
+          <th>Party</th>
+          <th>Voter Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in voters %}
+          <tr>
+            <td><a href="{% url 'voter' v.pk %}">{{ v.first_name }}</a></td>
+            <td>{{ v.last_name }}</td>
+            <td>
+              {{ v.address_street_number|default_if_none:"" }}
+              {{ v.address_street_name|default_if_none:"" }}
+              {% if v.address_apartment_number %}Apt {{ v.address_apartment_number }}{% endif %}
+            </td>
+            <td>{{ v.date_birth|date:"Y-m-d" }}</td>
+            <td>{{ v.party }}</td>
+            <td>{{ v.voter_score }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" class="muted">No voters found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="pager">
+      {% if page_obj.has_previous %}
+        <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page=1">&laquo; First</a>
+        <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+      {% else %}
+        <span class="muted">&laquo; First</span>
+        <span class="muted">Previous</span>
+      {% endif %}
+
+      <span class="current">Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+      {% if page_obj.has_next %}
+        <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+        <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+      {% else %}
+        <span class="muted">Next</span>
+        <span class="muted">Last &raquo;</span>
+      {% endif %}
+    </div>
+  </body>
+</html>
+

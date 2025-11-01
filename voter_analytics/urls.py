@@ -1,12 +1,8 @@
 # voter_analytics/urls.py
 from django.urls import path
-from .views import VotersListView, VoterRecordView
-
-app_name = "voter_analytics"
+from .views import * 
 
 urlpatterns = [
-    path('', VotersListView.as_view(), name='voters'),
-    path('voter/<int:pk>', VoterRecordView.as_view(), name='voter')
+    path('', VoterListView.as_view(), name="voters"),
+    path('voter/<int:pk>/', VoterDetailView.as_view(), name="voter"),
 ]
-
-

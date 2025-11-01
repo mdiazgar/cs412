@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head><meta charset="utf-8"><title>{{ voter.first_name }} {{ voter.last_name }}</title></head>
+  <body>
+    <p><a href="{% url 'voters' %}">&larr; Back to list</a></p>
+    <h1>{{ voter.first_name }} {{ voter.last_name }}</h1>
+
+    <ul>
+      <li><strong>Street:</strong> {{ voter.address_street_number }} {{ voter.address_street_name }}{% if voter.address_apartment_number %}, Apt {{ voter.address_apartment_number }}{% endif %}</li>
+      <li><strong>ZIP:</strong> {{ voter.address_zip_code }}</li>
+      <li><strong>Birth date:</strong> {{ voter.date_birth|date:"Y-m-d" }}</li>
+      <li><strong>Registration date:</strong> {{ voter.date_registration|date:"Y-m-d" }}</li>
+      <li><strong>Party:</strong> {{ voter.party }}</li>
+      <li><strong>Precinct:</strong> {{ voter.precinct_number }}</li>
+      <li><strong>Voter score:</strong> {{ voter.voter_score }}</li>
+      <li><strong>Voted 2020 State:</strong> {{ voter.v20state }}</li>
+      <li><strong>Voted 2021 Town:</strong> {{ voter.v21town }}</li>
+      <li><strong>Voted 2021 Primary:</strong> {{ voter.v21primary }}</li>
+      <li><strong>Voted 2022 General:</strong> {{ voter.v22general }}</li>
+      <li><strong>Voted 2023 Town:</strong> {{ voter.v23town }}</li>
+    </ul>
+
+    <p>
+      <a target="_blank"
+         href="https://www.google.com/maps/search/?api=1&query={{ voter.address_street_number|urlencode }}+{{ voter.address_street_name|urlencode }}+{{ voter.address_zip_code|urlencode }}">
+        Open in Google Maps
+      </a>
+    </p>
+
+    <p><a href="{% url 'voters' %}">Back to list</a></p>
+  </body>
+</html>
