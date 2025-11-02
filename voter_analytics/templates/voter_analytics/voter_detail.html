@@ -2,7 +2,7 @@
 <html>
   <head><meta charset="utf-8"><title>{{ voter.first_name }} {{ voter.last_name }}</title></head>
   <body>
-    <p><a href="{% url 'voters' %}">&larr; Back to list</a></p>
+    <p><a href="{% url 'voter_analytics:voters' %}">&larr; Back to list</a></p>
     <h1>{{ voter.first_name }} {{ voter.last_name }}</h1>
 
     <ul>
