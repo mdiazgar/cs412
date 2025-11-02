@@ -69,7 +69,7 @@
       <tbody>
         {% for v in voters %}
           <tr>
-            <td><a href="{% url 'voter_analytics:voters' v.pk %}">{{ v.first_name }}</a></td>
+            <td><a href="{% url 'voter_analytics:voter' v.pk %}">{{ v.first_name }}</a></td>
             <td>{{ v.last_name }}</td>
             <td>
               {{ v.address_street_number|default_if_none:"" }}
