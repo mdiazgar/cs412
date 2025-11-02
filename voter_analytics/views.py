@@ -62,7 +62,7 @@ class VoterGraphsView(ListView):
     model = Voter
     template_name = "voter_analytics/graphs.html"
     context_object_name = "voters"
-    paginate_by = 0  # no table pagination on graphs page
+    paginate_by = 0  
 
     def get_queryset(self):
         qs = Voter.objects.all()
@@ -123,7 +123,6 @@ class VoterGraphsView(ListView):
             if k in {f for f, _ in ctx["election_filters"]}
         }
 
-        # If there are no rows after filtering, show a friendly message and exit early
         if n == 0:
             ctx["birth_hist_html"] = ctx["party_pie_html"] = ctx["elections_bar_html"] = ""
             ctx["empty_msg"] = "No data for the selected filters."
@@ -168,7 +167,7 @@ class VoterGraphsView(ListView):
         )
         ctx["party_pie_html"] = to_html(fig_party, full_html=False, include_plotlyjs=False)
 
-        # ----- Graph 3: Vote count by election (bar) -----
+        # ----- Graph 3: Vote count by election -----
         agg = qs.aggregate(
             v20state=Sum("v20state"),
             v21town=Sum("v21town"),
