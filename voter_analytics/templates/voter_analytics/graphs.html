@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Voter Graphs</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 1.5rem; }
+    .filters label { margin-right: 1rem; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-top: 1rem; }
+    @media (min-width: 1000px) { .grid { grid-template-columns: 1fr 1fr; } }
+    .full { grid-column: 1 / -1; }
+  </style>
+</head>
+<body>
+  <h1>Graphs</h1>
+
+  <!-- Filters -->
+  <form method="get" class="filters">
+    <label>Party
+      <select name="party">
+        <option value="">Any</option>
+        {% for p in party_choices %}
+          <option value="{{ p }}" {% if request.GET.party == p %}selected{% endif %}>{{ p }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>Min year
+      <select name="min_year">
+        <option value="">Any</option>
+        {% for y in year_choices %}
+          <option value="{{ y }}" {% if request.GET.min_year == y|stringformat:"s" %}selected{% endif %}>{{ y }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>Max year
+      <select name="max_year">
+        <option value="">Any</option>
+        {% for y in year_choices %}
+          <option value="{{ y }}" {% if request.GET.max_year == y|stringformat:"s" %}selected{% endif %}>{{ y }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>Voter score
+      <select name="score">
+        <option value="">Any</option>
+        {% for s in score_choices %}
+          <option value="{{ s }}" {% if request.GET.score == s|stringformat:"s" %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <div style="margin-top:.5rem">
+      {% for f,label in election_filters %}
+        <label style="margin-right:1rem">
+          <input type="checkbox" name="{{ f }}" {% if f in checked_elections %}checked{% endif %}>
+          {{ label }}
+        </label>
+      {% endfor %}
+    </div>
+
+    <button type="submit">Filter</button>
+  </form>
+
+  {% if empty_msg %}
+    <p>{{ empty_msg }}</p>
+  {% else %}
+    <!-- Graphs -->
+    {{ birth_hist_html|safe }}
+    <div class="grid">
+      <div>{{ party_pie_html|safe }}</div>
+      <div>{{ elections_bar_html|safe }}</div>
+    </div>
+  {% endif %}
+</body>
+</html>
