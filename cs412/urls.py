@@ -21,6 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
+from dadjokes import urls as dj_urls
 
 
 urlpatterns = [
@@ -30,7 +31,9 @@ urlpatterns = [
     path("mini_insta/", include(("mini_insta.urls", "mini_insta"), namespace="mini_insta")),
     path('login/', auth_views.LoginView.as_view(template_name='mini_insta/login.html'), name='login'), 
 	path('logout/', auth_views.LogoutView.as_view(next_page='mini_insta:show_all_profiles'), name='logout'),
-    path('voter_analytics/', include(('voter_analytics.urls', 'voter_analytics'), namespace='voter_analytics')) 
+    #path('voter_analytics/', include(('voter_analytics.urls', 'voter_analytics'), namespace='voter_analytics')),
+    path('dadjokes/', include((dj_urls.html_urlpatterns, 'dadjokes'), namespace='dadjokes')),
+    path('api/', include((dj_urls.api_urlpatterns, 'dadjokes_api'), namespace='dadjokes_api')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

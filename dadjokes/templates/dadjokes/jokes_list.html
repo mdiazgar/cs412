@@ -1,0 +1,14 @@
+{% extends "dadjokes/base.html" %}
+{% block content %}
+  <h2>All Jokes</h2>
+  {% for joke in jokes %}
+    <div class="card">
+      <p>{{ joke.text }}</p>
+      <small>By {{ joke.contributor }} • {{ joke.created_at|date:"Y-m-d H:i" }} •
+        <a href="{% url 'dadjokes:joke_detail' joke.pk %}">View</a>
+      </small>
+    </div>
+  {% empty %}
+    <p>No jokes available.</p>
+  {% endfor %}
+{% endblock %}

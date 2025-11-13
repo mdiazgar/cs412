@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>DadJokes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+    header, nav { display: flex; gap: 1rem; align-items: center; }
+    header { justify-content: space-between; margin-bottom: 1rem; }
+    .card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+    a { text-decoration: none; color: #0b5ed7; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<header>
+  <h1><a href="{% url 'dadjokes:home' %}">DadJokes</a></h1>
+  <nav>
+    <a href="{% url 'dadjokes:random' %}">Random</a>
+    <a href="{% url 'dadjokes:jokes_list' %}">Jokes</a>
+    <a href="{% url 'dadjokes:pictures_list' %}">Pictures</a>
+  </nav>
+</header>
+<main>
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>
