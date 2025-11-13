@@ -23,4 +23,5 @@ api_urlpatterns = [
     path('joke/<int:pk>', views.JokeDetailAPIView.as_view(), name='api_joke_detail'),
     path('pictures', views.PicturesListAPIView.as_view(), name='api_pictures'),
     path('picture/<int:pk>', views.PictureDetailAPIView.as_view(), name='api_picture_detail'),
+    path('random_picture/', views.RandomPictureAPIView.as_view(), name='api_random_picture'),
 ]

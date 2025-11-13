@@ -85,3 +85,15 @@ class PictureDetailAPIView(generics.RetrieveAPIView):
     queryset = Picture.objects.all()
     serializer_class = PictureSerializer
     lookup_field = "pk"
+
+class RandomPictureAPIView(APIView):
+    '''
+    GEt -> return one random picture
+    '''
+    def get(self, request, *args, **kwargs):
+        pictures = Picture.objects.all()
+        if not pictures:
+            return Response({"error": "No pictures found."})
+        picture = random.choice(pictures)
+        serializer = PictureSerializer(picture)
+        return Response(serializer.data)
