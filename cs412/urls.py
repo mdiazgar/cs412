@@ -34,6 +34,7 @@ urlpatterns = [
     #path('voter_analytics/', include(('voter_analytics.urls', 'voter_analytics'), namespace='voter_analytics')),
     path('dadjokes/', include((dj_urls.html_urlpatterns, 'dadjokes'), namespace='dadjokes')),
     path('api/', include((dj_urls.api_urlpatterns, 'dadjokes_api'), namespace='dadjokes_api')),
+    path('project/', include(('project.urls', 'project'), namespace='project')),,
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

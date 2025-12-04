@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'dadjokes',
     'rest_framework',
     'corsheaders',
+    'project',  
 ]
 
 MIDDLEWARE = [

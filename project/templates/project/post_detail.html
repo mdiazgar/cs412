@@ -1,0 +1,28 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Post {{ post.id }}</h1>
+<p><strong>Campaign:</strong> <a href="{% url 'project:campaign_detail' post.campaign.pk %}">
+  {{ post.campaign.name }}
+</a></p>
+<p><strong>Date:</strong> {{ post.post_date }}</p>
+<p><strong>Type:</strong> {{ post.get_content_type_display }}</p>
+<p><strong>Caption:</strong> {{ post.caption }}</p>
+{% if post.url %}
+  <p><a href="{{ post.url }}" target="_blank">View live post</a></p>
+{% endif %}
+
+{% if post.metrics %}
+  <h2>Metrics</h2>
+  <ul>
+    <li>Impressions: {{ post.metrics.impressions }}</li>
+    <li>Likes: {{ post.metrics.likes }}</li>
+    <li>Comments: {{ post.metrics.comments }}</li>
+    <li>Shares: {{ post.metrics.shares }}</li>
+    <li>Saves: {{ post.metrics.saves }}</li>
+    <li>Clicks: {{ post.metrics.clicks }}</li>
+  </ul>
+{% else %}
+  <p>No metrics recorded yet.</p>
+{% endif %}
+{% endblock %}

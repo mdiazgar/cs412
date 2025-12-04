@@ -1,0 +1,17 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Channels</h1>
+<ul class="list-group">
+  {% for channel in channels %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <span>{{ channel.name }} ({{ channel.platform_handle }})</span>
+      <a href="{% url 'project:channel_detail' channel.pk %}" class="btn btn-sm btn-primary">
+        View
+      </a>
+    </li>
+  {% empty %}
+    <li class="list-group-item">No channels yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

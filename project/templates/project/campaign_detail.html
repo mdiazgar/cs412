@@ -1,0 +1,31 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>{{ campaign.name }}</h1>
+<p><strong>Channel:</strong> {{ campaign.channel.name }}</p>
+<p><strong>Objective:</strong> {{ campaign.get_objective_display }}</p>
+<p><strong>Dates:</strong> {{ campaign.start_date }} – {{ campaign.end_date }}</p>
+<p><strong>Budget:</strong> ${{ campaign.budget }}</p>
+
+<h2>Posts in this campaign</h2>
+<a href="{% url 'project:post_create' %}" class="btn btn-sm btn-success mb-2">
+  + New Post
+</a>
+
+<ul class="list-group">
+  {% for post in campaign.posts.all %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        {{ post.post_date }} – {{ post.get_content_type_display }}
+        <br>
+        <small>{{ post.caption|truncatechars:80 }}</small>
+      </div>
+      <a href="{% url 'project:post_detail' post.pk %}" class="btn btn-sm btn-outline-primary">
+        View post
+      </a>
+    </li>
+  {% empty %}
+    <li class="list-group-item">No posts for this campaign yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

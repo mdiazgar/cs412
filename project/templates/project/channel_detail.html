@@ -1,0 +1,21 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>{{ channel.name }}</h1>
+<p><strong>Handle:</strong> {{ channel.platform_handle }}</p>
+<p>{{ channel.description }}</p>
+
+<h2>Campaigns on this channel</h2>
+<ul class="list-group">
+  {% for campaign in channel.campaigns.all %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <span>{{ campaign.name }} ({{ campaign.start_date }} – {{ campaign.end_date }})</span>
+      <a href="{% url 'project:campaign_detail' campaign.pk %}" class="btn btn-sm btn-outline-primary">
+        View campaign
+      </a>
+    </li>
+  {% empty %}
+    <li class="list-group-item">No campaigns for this channel yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
