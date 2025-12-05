@@ -1,0 +1,17 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Delete Post {{ object.id }}</h1>
+
+<p>Are you sure you want to delete this post from the campaign
+   <strong>{{ object.campaign.name }}</strong>?</p>
+
+<p><strong>Date:</strong> {{ object.post_date }}</p>
+<p><strong>Caption:</strong> {{ object.caption }}</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Yes, delete</button>
+  <a href="{% url 'project:post_detail' object.pk %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

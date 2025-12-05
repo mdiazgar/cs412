@@ -2,6 +2,13 @@
 
 {% block content %}
 <h1>{{ campaign.name }}</h1>
+
+<div class="mb-3">
+  <a href="{% url 'project:campaign_update' campaign.pk %}" class="btn btn-sm btn-warning">
+    Edit campaign
+  </a>
+</div>
+
 <p><strong>Channel:</strong> {{ campaign.channel.name }}</p>
 <p><strong>Objective:</strong> {{ campaign.get_objective_display }}</p>
 <p><strong>Dates:</strong> {{ campaign.start_date }} – {{ campaign.end_date }}</p>

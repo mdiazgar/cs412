@@ -25,4 +25,11 @@
 {% else %}
   <p>No metrics recorded yet.</p>
 {% endif %}
+
+<div class="mb-3">
+  <a href="{% url 'project:post_delete' post.pk %}" class="btn btn-sm btn-danger">
+    Delete post
+  </a>
+</div>
+
 {% endblock %}

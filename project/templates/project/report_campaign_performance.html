@@ -1,0 +1,81 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Campaign Performance Report</h1>
+
+<form method="get" class="row g-3 mb-4">
+  <div class="col-md-4">
+    <label for="channel" class="form-label">Channel</label>
+    <select name="channel" id="channel" class="form-select">
+      <option value="">All channels</option>
+      {% for ch in channels %}
+        <option value="{{ ch.id }}" {% if selected_channel_id|add:'' == ch.id|add:'' %}selected{% endif %}>
+          {{ ch.name }} ({{ ch.platform_handle }})
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label for="start_date" class="form-label">Start date (campaign)</label>
+    <input type="date" id="start_date" name="start_date" class="form-control" value="{{ start_date }}">
+  </div>
+  <div class="col-md-3">
+    <label for="end_date" class="form-label">End date (campaign)</label>
+    <input type="date" id="end_date" name="end_date" class="form-control" value="{{ end_date }}">
+  </div>
+  <div class="col-md-2 d-flex align-items-end">
+    <button type="submit" class="btn btn-primary w-100">Filter</button>
+  </div>
+</form>
+
+{% if results %}
+<table class="table table-striped table-bordered">
+  <thead class="table-light">
+    <tr>
+      <th>Campaign</th>
+      <th>Channel</th>
+      <th>Total Impressions</th>
+      <th>Total Likes</th>
+      <th>Total Comments</th>
+      <th>Total Shares</th>
+      <th>Total Clicks</th>
+      <th>Engagement Rate</th>
+      <th>CTR</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in results %}
+      <tr>
+        <td>
+          <a href="{% url 'project:campaign_detail' row.campaign.pk %}">
+            {{ row.campaign.name }}
+          </a>
+        </td>
+        <td>{{ row.campaign.channel.name }}</td>
+        <td>{{ row.total_impressions }}</td>
+        <td>{{ row.total_likes }}</td>
+        <td>{{ row.total_comments }}</td>
+        <td>{{ row.total_shares }}</td>
+        <td>{{ row.total_clicks }}</td>
+        <td>
+          {% if row.engagement_rate %}
+            {{ row.engagement_rate|floatformat:3 }}
+          {% else %}
+            0
+          {% endif %}
+        </td>
+        <td>
+          {% if row.ctr %}
+            {{ row.ctr|floatformat:3 }}
+          {% else %}
+            0
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p>No campaigns found for this filter.</p>
+{% endif %}
+{% endblock %}
