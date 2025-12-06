@@ -23,21 +23,40 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-2gnv(h@osbun3^$6z__7*1+2i@3*5zgex_%+fs&0+of4^tfj(w'
 
+SITE_ID = 1
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'cs-webapps.bu.edu']
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # backend 
+    'allauth.account.auth_backends.AuthenticationBackend',  # allauth
+]
+
+LOGIN_REDIRECT_URL = '/'           # send after login
+LOGOUT_REDIRECT_URL = '/'          # send after logout
+
+ACCOUNT_LOGIN_METHODS = {'username'}   # o {'email'} o {'username', 'email'}
+ACCOUNT_SIGNUP_FIELDS = ['username', 'email', 'password1', 'password2']
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'quotes',
     'restaurant',
@@ -55,6 +74,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',

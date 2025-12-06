@@ -35,6 +35,7 @@ urlpatterns = [
     path('dadjokes/', include((dj_urls.html_urlpatterns, 'dadjokes'), namespace='dadjokes')),
     path('api/', include((dj_urls.api_urlpatterns, 'dadjokes_api'), namespace='dadjokes_api')),
     path('project/', include(('project.urls', 'project'), namespace='project')),
+    path('accounts/', include('allauth.urls')),  
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
