@@ -1,38 +1,89 @@
 {% extends 'project/base.html' %}
 
 {% block content %}
-<h1>{{ campaign.name }}</h1>
+<div class="row mb-4">
+  <div class="col-md-8">
+    <h1 class="h3 mb-1">{{ campaign.name }}</h1>
+    <p class="text-muted-soft mb-2">
+      {{ campaign.channel.name }} · {{ campaign.objective.name }}
+    </p>
+  </div>
 
-<div class="mb-3">
-  <a href="{% url 'project:campaign_update' campaign.pk %}" class="btn btn-sm btn-warning">
-    Edit campaign
-  </a>
+  <div class="col-md-4 text-md-end">
+    <a href="{% url 'project:campaign_update' campaign.pk %}"
+       class="btn btn-outline-light btn-sm me-2">
+      Edit campaign
+    </a>
+    <a href="{% url 'project:post_create' %}"
+       class="btn btn-accent btn-sm">
+      + New Post
+    </a>
+  </div>
 </div>
 
-<p><strong>Channel:</strong> {{ campaign.channel.name }}</p>
-<p><strong>Objective:</strong> {{ campaign.get_objective_display }}</p>
-<p><strong>Dates:</strong> {{ campaign.start_date }} – {{ campaign.end_date }}</p>
-<p><strong>Budget:</strong> ${{ campaign.budget }}</p>
-
-<h2>Posts in this campaign</h2>
-<a href="{% url 'project:post_create' %}" class="btn btn-sm btn-success mb-2">
-  + New Post
-</a>
-
-<ul class="list-group">
-  {% for post in campaign.posts.all %}
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      <div>
-        {{ post.post_date }} – {{ post.get_content_type_display }}
-        <br>
-        <small>{{ post.caption|truncatechars:80 }}</small>
+<div class="row g-4">
+  <!-- Summary card -->
+  <div class="col-md-5">
+    <div class="card card-cl">
+      <div class="card-body">
+        <h2 class="h6 text-muted-soft mb-3">Campaign summary</h2>
+        <p class="mb-2">
+          <strong>Channel:</strong>
+          <span class="badge badge-channel ms-1">
+            {{ campaign.channel.name }}
+          </span>
+        </p>
+        <p class="mb-2">
+          <strong>Objective:</strong>
+          <span class="badge badge-objective ms-1">
+            {{ campaign.objective.name }}
+          </span>
+        </p>
+        <p class="mb-2">
+          <strong>Dates:</strong>
+          {{ campaign.start_date }} – {{ campaign.end_date }}
+        </p>
+        <p class="mb-0">
+          <strong>Budget:</strong>
+          ${{ campaign.budget }}
+        </p>
       </div>
-      <a href="{% url 'project:post_detail' post.pk %}" class="btn btn-sm btn-outline-primary">
-        View post
-      </a>
-    </li>
-  {% empty %}
-    <li class="list-group-item">No posts for this campaign yet.</li>
-  {% endfor %}
-</ul>
+    </div>
+  </div>
+
+  <!-- Posts list -->
+  <div class="col-md-7">
+    <div class="card card-cl">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h2 class="h6 text-muted-soft mb-0">Posts in this campaign</h2>
+        </div>
+
+        {% if campaign.posts.all %}
+          <div class="list-group list-group-flush">
+            {% for post in campaign.posts.all %}
+              <a href="{% url 'project:post_detail' post.pk %}"
+                 class="list-group-item list-group-item-action bg-transparent text-light border-secondary">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <div>
+                      {{ post.post_date }} · {{ post.get_content_type_display }}
+                    </div>
+                    <div class="text-muted-soft">
+                      {{ post.caption|truncatechars:80 }}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="mt-3 text-muted-soft">
+            No posts for this campaign yet.
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

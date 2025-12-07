@@ -1,0 +1,54 @@
+{% extends "project/base.html" %}
+{% load i18n %}
+
+{% block nav_links %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card card-cl">
+      <div class="card-body">
+        <h1 class="h4 mb-3 text-center text-light">
+          {% blocktrans with provider_name=account.get_provider.name %}
+            Complete sign up with {{ provider_name }}
+          {% endblocktrans %}
+        </h1>
+        <p class="text-center mb-4" style="color:#e5e7eb;">
+          {% blocktrans with provider_name=account.get_provider.name %}
+            We received your {{ provider_name }} account. Please confirm the details
+            below to finish creating your profile.
+          {% endblocktrans %}
+        </p>
+
+        <form method="post" action="{% url 'socialaccount_signup' %}">
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+
+          {% for field in form %}
+            <div class="mb-3">
+              <label class="form-label text-light" for="{{ field.id_for_label }}">
+                {{ field.label }}
+              </label>
+              {{ field }}
+              {% if field.help_text %}
+                <div class="form-text">{{ field.help_text }}</div>
+              {% endif %}
+              {% if field.errors %}
+                <div class="text-danger small">{{ field.errors }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+          {% endif %}
+
+          <button type="submit" class="btn btn-accent w-100">
+            {% trans "Finish sign up" %}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

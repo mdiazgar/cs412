@@ -36,12 +36,27 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',  # allauth
 ]
 
-LOGIN_REDIRECT_URL = '/'           # send after login
-LOGOUT_REDIRECT_URL = '/'          # send after logout
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/project/'           # send after login
+LOGOUT_REDIRECT_URL = '/accounts/login/'          # send after logout
 
-ACCOUNT_LOGIN_METHODS = {'username'}   # o {'email'} o {'username', 'email'}
+ACCOUNT_LOGIN_METHODS = {'username', 'email'}   # o {'email'} o {'username', 'email'}
 ACCOUNT_SIGNUP_FIELDS = ['username', 'email', 'password1', 'password2']
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_USERNAMEL_REQUIRED = True
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+            'prompt': 'select_account',  
+        },
+    }
+}
 
 
 # Application definition
@@ -85,10 +100,13 @@ ROOT_URLCONF = 'cs412.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            Path(__file__).resolve().parent / 'templates', 
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -96,6 +114,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'cs412.wsgi.application'
 

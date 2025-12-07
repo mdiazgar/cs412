@@ -1,0 +1,111 @@
+{% extends "project/base.html" %}
+{% load socialaccount %}
+
+{% block nav_links %}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+  <div class="card card-cl p-4 p-md-5" style="max-width: 480px; width: 100%;">
+
+    <h1 class="mb-3 page-title" style="font-size: 1.8rem;">
+      Create your account
+    </h1>
+    <p class="text-muted-soft mb-4">
+      Sign up to start tracking your channels and campaigns in Campaign Analytics.
+    </p>
+
+    <form method="post" action="{% url 'account_signup' %}">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger py-2">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      {# Username #}
+      <div class="mb-3">
+        <label class="form-label text-muted-soft">Username</label>
+        <input
+          type="text"
+          name="username"
+          class="form-control"
+          value="{{ form.username.value|default_if_none:'' }}"
+          autocomplete="username"
+          required
+        >
+        {% if form.username.errors %}
+          <div class="text-danger small mt-1">{{ form.username.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      {# Email #}
+      <div class="mb-3">
+        <label class="form-label text-muted-soft">Email</label>
+        <input
+          type="email"
+          name="email"
+          class="form-control"
+          value="{{ form.email.value|default_if_none:'' }}"
+          autocomplete="email"
+          required
+        >
+        {% if form.email.errors %}
+          <div class="text-danger small mt-1">{{ form.email.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      {# Password1 #}
+      <div class="mb-3">
+        <label class="form-label text-muted-soft">Password</label>
+        <input
+          type="password"
+          name="password1"
+          class="form-control"
+          autocomplete="new-password"
+          required
+        >
+        {% if form.password1.errors %}
+          <div class="text-danger small mt-1">{{ form.password1.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      {# Password2 #}
+      <div class="mb-3">
+        <label class="form-label text-muted-soft">Confirm password</label>
+        <input
+          type="password"
+          name="password2"
+          class="form-control"
+          autocomplete="new-password"
+          required
+        >
+        {% if form.password2.errors %}
+          <div class="text-danger small mt-1">{{ form.password2.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+      {% endif %}
+
+      <button type="submit" class="btn btn-accent w-100 mb-3">
+        Sign up
+      </button>
+    </form>
+
+    <div class="text-center text-muted-soft my-2">or</div>
+
+    <a href="{% provider_login_url 'google' process='signup' %}"
+       class="btn btn-outline-light w-100">
+      Sign up with Google
+    </a>
+
+    <p class="text-center text-muted-soft mt-4 mb-0">
+      Already have an account?
+      <a href="{% url 'account_login' %}">Log in</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
+

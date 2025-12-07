@@ -1,0 +1,47 @@
+{% extends "project/base.html" %}
+{% load i18n %}
+
+{% block nav_links %}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+  <div class="card card-cl p-4 p-md-5" style="max-width: 520px; width: 100%;">
+
+    <h2 class="page-title mb-3 text-center">
+      {% if process == "signup" %}
+        Sign up with Google
+      {% elif process == "connect" %}
+        Connect your Google account
+      {% else %}
+        Log in with Google
+      {% endif %}
+    </h2>
+
+    <p class="text-muted-soft text-center mb-4">
+      {% if process == "signup" %}
+        We’ll use your Google account to create a new Campaign Analytics profile.
+      {% elif process == "connect" %}
+        We will link this Google account to your existing Campaign Analytics profile.
+      {% else %}
+        You are about to log in using your Google account. We’ll connect it
+        to your Campaign Analytics profile.
+      {% endif %}
+    </p>
+
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-accent w-100">
+        {% if process == "signup" %}
+          Sign up with Google
+        {% elif process == "connect" %}
+          Connect with Google
+        {% else %}
+          Log in with Google
+        {% endif %}
+      </button>
+    </form>
+
+  </div>
+</div>
+{% endblock %}
+

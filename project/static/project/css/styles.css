@@ -1,0 +1,211 @@
+:root {
+  --cl-bg: #020617;
+  --cl-card-bg: #020617;
+  --cl-row-dark: #020617;
+  --cl-row-light: #020819;
+  --cl-border: #1f2937;
+  --cl-text-main: #f3f4f6;       /* blanco suave */
+  --cl-text-muted: #cbd5f5;      /* gris legible */
+  --cl-header-text: #f9fafb;     /* casi blanco para encabezados */
+  --cl-accent: #ec4899;          /* rosa principal */
+  --cl-accent-soft: #f9a8d4;     /* rosa suave */
+}
+
+/* Fondo general */
+body {
+  background: radial-gradient(circle at top left, #0f172a 0, #020617 55%, #000000 100%);
+  color: var(--cl-text-main);
+}
+
+.page-title {
+  font-size: 2.4rem;      
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+  color: var(--cl-text-main);
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--cl-text-muted);
+  margin-bottom: 1.5rem;
+}
+
+
+/* Navbar */
+.navbar-cl {
+  background: linear-gradient(90deg, #020617, #1e293b);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.6);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav-link {
+  font-size: 0.95rem;
+}
+
+/* Botón principal rosa */
+.btn-accent {
+  background-color: var(--cl-accent);
+  border-color: var(--cl-accent);
+  color: #fff;
+}
+
+.btn-accent:hover {
+  background-color: #db2777;
+  border-color: #db2777;
+}
+
+/* Tarjetas */
+.card-cl {
+  background-color: var(--cl-card-bg);
+  border-radius: 1.25rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.8);
+  color: var(--cl-text-main);
+}
+
+.card-cl-header {
+  color: var(--cl-text-muted);
+}
+
+.card-cl p {
+  color: var(--cl-text-muted);
+}
+
+.badge-objective {
+  background: rgba(236, 72, 153, 0.15);
+  color: var(--cl-accent-soft);
+  border: 1px solid rgba(236, 72, 153, 0.4);
+}
+
+.badge-channel {
+  background: rgba(59, 130, 246, 0.12);
+  color: #bfdbfe;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+/* Tablas genéricas (si las usas en otros sitios) */
+.table-report {
+  color: var(--cl-text-main);
+}
+
+.table-report thead {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.table-report tbody tr {
+  background: rgba(15, 23, 42, 0.7);
+}
+
+.table-report tbody tr:nth-child(even) {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+/* Links generales */
+a {
+  color: var(--cl-accent-soft);
+}
+
+a:hover {
+  color: var(--cl-accent);
+}
+
+.text-muted-soft {
+  color: var(--cl-text-muted);
+  font-size: 0.9rem;
+}
+
+
+.cl-table {
+  background-color: #020617;
+  color: var(--cl-text-main);
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Cabecera: forzamos fondo oscuro y texto casi blanco */
+.cl-table thead {
+  background-color: #020617 !important;
+  border-bottom: 1px solid var(--cl-border);
+}
+
+.cl-table thead th {
+  background-color: #020617 !important;   /* pisa el blanco de Bootstrap */
+  color: var(--cl-header-text);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--cl-border);
+}
+
+/* Filas: damos color a las celdas, no solo al <tr> */
+.cl-table tbody td,
+.cl-table tbody th {
+  background-color: #020819;
+  color: var(--cl-text-main);
+  border-top: 1px solid rgba(15, 23, 42, 0.9);
+}
+
+.cl-table tbody tr:nth-child(even) td,
+.cl-table tbody tr:nth-child(even) th {
+  background-color: #050b18;
+}
+
+/* Hover fila */
+.cl-table tbody tr:hover td,
+.cl-table tbody tr:hover th {
+  background-color: rgba(30, 64, 175, 0.45);
+}
+
+/* Padding */
+.cl-table td,
+.cl-table th {
+  padding: 0.85rem 1rem;
+  vertical-align: middle;
+}
+
+.cl-table a {
+  color: var(--cl-accent-soft);
+  text-decoration: underline;
+}
+
+.cl-table a:hover {
+  color: var(--cl-accent);
+}
+
+.cl-table tbody tr td.text-muted-soft {
+  color: var(--cl-text-muted);
+}
+
+.metrics-table {
+  color: var(--cl-text-main);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.metrics-table tbody tr > * {
+  background-color: #020617;                 
+  border-top: 1px solid rgba(15, 23, 42, 0.9);
+}
+
+.metrics-table tbody tr:nth-child(even) > * {
+  background-color: #020819;                
+}
+
+.metrics-table th {
+  font-weight: 500;
+}
+
+.metrics-table td.text-end {
+  font-variant-numeric: tabular-nums;        
+}
+
+.metrics-table th,
+.metrics-table td {
+  color: #ffffff !important;
+}

@@ -1,17 +1,36 @@
 {% extends 'project/base.html' %}
 
 {% block content %}
-<h1>Channels</h1>
-<ul class="list-group">
+<div class="mb-4">
+  <div class="col">
+    <h1 class="page-title">Channels</h1>
+    <p class="page-subtitle">Social accounts currently tracked in your dashboard.</p>
+  </div>
+</div>
+
+<div class="row g-4">
   {% for channel in channels %}
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      <span>{{ channel.name }} ({{ channel.platform_handle }})</span>
-      <a href="{% url 'project:channel_detail' channel.pk %}" class="btn btn-sm btn-primary">
-        View
-      </a>
-    </li>
+    <div class="col-md-4">
+      <div class="card card-cl h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h2 class="h5 mb-0">{{ channel.name }}</h2>
+            <span class="badge badge-channel">Channel</span>
+          </div>
+          {% if channel.platform_handle %}
+            <p class="mb-1 text-muted-soft">@{{ channel.platform_handle }}</p>
+          {% endif %}
+          <p class="mb-3">
+            {{ channel.description|default:"No description yet."|truncatechars:120 }}
+          </p>
+          <a href="{% url 'project:channel_detail' channel.pk %}" class="btn btn-accent btn-sm">
+            View campaigns
+          </a>
+        </div>
+      </div>
+    </div>
   {% empty %}
-    <li class="list-group-item">No channels yet.</li>
+    <p>No channels yet.</p>
   {% endfor %}
-</ul>
+</div>
 {% endblock %}

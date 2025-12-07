@@ -1,7 +1,18 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 # Create your models here.
 class Channel(models.Model):
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='channels',
+        null=True,
+        blank=True,          
+    )
     name = models.CharField(max_length=100)
     platform_handle = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
@@ -9,7 +20,17 @@ class Channel(models.Model):
     def __str__(self):
         return self.name
 
+class Objective(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=120, unique=True)
+    description = models.TextField(blank=True)
 
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+    
 class Campaign(models.Model):
     OBJECTIVE_CHOICES = [
         ('AWARENESS', 'Brand awareness'),
@@ -19,9 +40,10 @@ class Campaign(models.Model):
     ]
 
     name = models.CharField(max_length=150)
-    objective = models.CharField(
-        max_length=20,
-        choices=OBJECTIVE_CHOICES,
+    objective = models.ForeignKey(
+        "Objective",
+        on_delete=models.PROTECT,   
+        related_name="campaigns",
     )
     channel = models.ForeignKey(
         Channel,

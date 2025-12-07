@@ -1,26 +1,44 @@
 {% extends 'project/base.html' %}
 
 {% block content %}
-<h1>Campaigns</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="mb-4">
+    <h1 class="page-title">Campaigns</h1>
+    <p class="page-subtitle">All campaigns across channels.</p>
+  </div>
+  <a href="{% url 'project:campaign_create' %}" class="btn btn-accent">
+    + New Campaign
+  </a>
+</div>
 
-<a href="{% url 'project:campaign_create' %}" class="btn btn-success mb-3">
-  + New Campaign
-</a>
-
-<ul class="list-group">
+<div class="row g-4">
   {% for campaign in campaigns %}
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      <div>
-        <strong>{{ campaign.name }}</strong> – {{ campaign.channel.name }}
-        <br>
-        <small>{{ campaign.start_date }} – {{ campaign.end_date }}</small>
+    <div class="col-md-6">
+      <div class="card card-cl h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+              <h2 class="h5 mb-1">{{ campaign.name }}</h2>
+              <span class="badge badge-channel me-1">
+                {{ campaign.channel.name }}
+              </span>
+              <span class="badge badge-objective">
+                {{ campaign.objective.name }}
+              </span>
+            </div>
+            <div class="text-end text-muted-soft">
+              <div>{{ campaign.start_date }} – {{ campaign.end_date }}</div>
+              <div>Budget: ${{ campaign.budget }}</div>
+            </div>
+          </div>
+          <a href="{% url 'project:campaign_detail' campaign.pk %}" class="btn btn-outline-light btn-sm">
+            Open campaign
+          </a>
+        </div>
       </div>
-      <a href="{% url 'project:campaign_detail' campaign.pk %}" class="btn btn-sm btn-primary">
-        Details
-      </a>
-    </li>
+    </div>
   {% empty %}
-    <li class="list-group-item">No campaigns yet.</li>
+    <p>No campaigns yet.</p>
   {% endfor %}
-</ul>
+</div>
 {% endblock %}

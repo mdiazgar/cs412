@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from .models import Channel, Campaign, Post, PostMetrics
+from .models import Channel, Campaign, Post, PostMetrics, Objective
 
 
 @admin.register(Channel)
@@ -25,3 +25,8 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(PostMetrics)
 class PostMetricsAdmin(admin.ModelAdmin):
     list_display = ('post', 'impressions', 'likes', 'comments', 'shares', 'clicks')
+
+@admin.register(Objective)
+class ObjectiveAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug")
+    search_fields = ("name", "slug")

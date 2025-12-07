@@ -1,0 +1,80 @@
+{% extends "project/base.html" %}
+{% load socialaccount %} 
+{% block nav_links %}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+  <div class="card card-cl p-4 p-md-5" style="max-width: 480px; width: 100%;">
+
+    <h1 class="mb-3 page-title" style="font-size: 1.8rem;">
+      Log in to Campaign Analytics
+    </h1>
+    <p class="text-muted-soft mb-4">
+      Choose how you want to log in. Once authenticated, you will only see
+      the channels and campaigns associated with your account.
+    </p>
+
+    <form method="post" action="{% url 'account_login' %}">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger py-2">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <div class="mb-3">
+        <label class="form-label text-muted-soft">Username or email</label>
+        <input
+          type="text"
+          name="login"
+          class="form-control"
+          value="{{ form.login.value|default_if_none:'' }}"
+          autocomplete="username"
+          required
+        >
+        {% if form.login.errors %}
+          <div class="text-danger small mt-1">{{ form.login.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-muted-soft">Password</label>
+        <input
+          type="password"
+          name="password"
+          class="form-control"
+          autocomplete="current-password"
+          required
+        >
+        {% if form.password.errors %}
+          <div class="text-danger small mt-1">{{ form.password.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+      {% endif %}
+
+      <button type="submit" class="btn btn-accent w-100 mb-3">
+        Log in
+      </button>
+    </form>
+
+    <div class="text-center text-muted-soft my-2">or</div>
+
+    <a href="{% provider_login_url 'google' process='login' %}"
+       class="btn btn-outline-light w-100">
+      Log in with Google
+    </a>
+
+    <p class="text-center text-muted-soft mt-4 mb-0">
+      Don’t have an account yet?
+      <a href="{% url 'account_signup' %}">Create one</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+
+
