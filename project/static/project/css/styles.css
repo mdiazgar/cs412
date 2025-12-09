@@ -1,24 +1,38 @@
+/*
+  styles.css
+
+  Global styling for the Campaign Analytics web application.
+
+  Defines a reusable dark theme using CSS custom properties and applies it
+  consistently to the navbar, cards, tables, forms and buttons. The goal is
+  to provide a cohesive “dashboard” look across all pages (channels list,
+  campaigns, posts, reports and auth screens).
+*/
+
+
 :root {
-  --cl-bg: #020617;
-  --cl-card-bg: #020617;
-  --cl-row-dark: #020617;
-  --cl-row-light: #020819;
-  --cl-border: #1f2937;
-  --cl-text-main: #f3f4f6;       /* blanco suave */
-  --cl-text-muted: #cbd5f5;      /* gris legible */
-  --cl-header-text: #f9fafb;     /* casi blanco para encabezados */
-  --cl-accent: #ec4899;          /* rosa principal */
-  --cl-accent-soft: #f9a8d4;     /* rosa suave */
+  --cl-bg: #020617;           
+  --cl-card-bg: #020617;      
+  --cl-row-dark: #020617;     
+  --cl-row-light: #020819;    
+  --cl-border: #1f2937;       
+  --cl-text-main: #f3f4f6;    
+  --cl-text-muted: #cbd5f5;   
+  --cl-header-text: #f9fafb;  
+  --cl-accent: #ec4899;       
+  --cl-accent-soft: #f9a8d4;  
 }
 
-/* Fondo general */
+/* Global page layout */
 body {
+  /* Radial gradient to give depth instead of a flat background */
   background: radial-gradient(circle at top left, #0f172a 0, #020617 55%, #000000 100%);
   color: var(--cl-text-main);
 }
 
+/* Page titles and subtitles shared by most views (list, report, forms) */
 .page-title {
-  font-size: 2.4rem;      
+  font-size: 2.4rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   margin-bottom: 0.25rem;
@@ -31,8 +45,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
-
-/* Navbar */
+/* Navbar and brand */
 .navbar-cl {
   background: linear-gradient(90deg, #020617, #1e293b);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.6);
@@ -48,7 +61,7 @@ body {
   font-size: 0.95rem;
 }
 
-/* Botón principal rosa */
+/* Primary pink CTA button used for actions such as Log in, Filter, Save */
 .btn-accent {
   background-color: var(--cl-accent);
   border-color: var(--cl-accent);
@@ -60,7 +73,7 @@ body {
   border-color: #db2777;
 }
 
-/* Tarjetas */
+/* Card containers */
 .card-cl {
   background-color: var(--cl-card-bg);
   border-radius: 1.25rem;
@@ -77,6 +90,7 @@ body {
   color: var(--cl-text-muted);
 }
 
+/* Badges for objectives and channels on the campaign list cards */
 .badge-objective {
   background: rgba(236, 72, 153, 0.15);
   color: var(--cl-accent-soft);
@@ -89,7 +103,7 @@ body {
   border: 1px solid rgba(59, 130, 246, 0.35);
 }
 
-/* Tablas genéricas (si las usas en otros sitios) */
+/* Simple table styling */
 .table-report {
   color: var(--cl-text-main);
 }
@@ -106,7 +120,7 @@ body {
   background: rgba(15, 23, 42, 0.9);
 }
 
-/* Links generales */
+/* Links and muted text helpers */
 a {
   color: var(--cl-accent-soft);
 }
@@ -115,12 +129,13 @@ a:hover {
   color: var(--cl-accent);
 }
 
+/* Used for secondary labels, helper text and empty-state messages */
 .text-muted-soft {
   color: var(--cl-text-muted);
   font-size: 0.9rem;
 }
 
-
+/* cl-table – main dark-mode reporting table for campaign performance */
 .cl-table {
   background-color: #020617;
   color: var(--cl-text-main);
@@ -128,14 +143,14 @@ a:hover {
   border-spacing: 0;
 }
 
-/* Cabecera: forzamos fondo oscuro y texto casi blanco */
+/* Header row with stronger visual separation */
 .cl-table thead {
   background-color: #020617 !important;
   border-bottom: 1px solid var(--cl-border);
 }
 
 .cl-table thead th {
-  background-color: #020617 !important;   /* pisa el blanco de Bootstrap */
+  background-color: #020617 !important;
   color: var(--cl-header-text);
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -143,7 +158,6 @@ a:hover {
   border-bottom: 1px solid var(--cl-border);
 }
 
-/* Filas: damos color a las celdas, no solo al <tr> */
 .cl-table tbody td,
 .cl-table tbody th {
   background-color: #020819;
@@ -156,19 +170,19 @@ a:hover {
   background-color: #050b18;
 }
 
-/* Hover fila */
+/* Hover effect */
 .cl-table tbody tr:hover td,
 .cl-table tbody tr:hover th {
   background-color: rgba(30, 64, 175, 0.45);
 }
 
-/* Padding */
 .cl-table td,
 .cl-table th {
   padding: 0.85rem 1rem;
   vertical-align: middle;
 }
 
+/* Links inside tables keep the pink brand accent */
 .cl-table a {
   color: var(--cl-accent-soft);
   text-decoration: underline;
@@ -182,19 +196,21 @@ a:hover {
   color: var(--cl-text-muted);
 }
 
+/* metrics-table  */
 .metrics-table {
   color: var(--cl-text-main);
   border-radius: 0.75rem;
   overflow: hidden;
 }
 
+/* Alternate dark rows similar to the main report table */
 .metrics-table tbody tr > * {
-  background-color: #020617;                 
+  background-color: #020617;
   border-top: 1px solid rgba(15, 23, 42, 0.9);
 }
 
 .metrics-table tbody tr:nth-child(even) > * {
-  background-color: #020819;                
+  background-color: #020819;
 }
 
 .metrics-table th {
@@ -202,7 +218,7 @@ a:hover {
 }
 
 .metrics-table td.text-end {
-  font-variant-numeric: tabular-nums;        
+  font-variant-numeric: tabular-nums;
 }
 
 .metrics-table th,

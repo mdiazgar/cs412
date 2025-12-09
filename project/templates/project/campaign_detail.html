@@ -1,3 +1,11 @@
+{# campaign_detail.html
+   Detail view for a single campaign.
+
+   Displays campaign metadata (channel, objective, dates, budget) and
+   lists all posts that belong to the campaign, with links to view each
+   post, add a new post or edit the campaign.
+#}
+
 {% extends 'project/base.html' %}
 
 {% block content %}
@@ -86,4 +94,91 @@
     </div>
   </div>
 </div>
+
+  {# Graph #}
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card card-cl p-4">
+      <h2 class="h5 mb-3 page-title">Campaign performance overview</h2>
+      <p class="text-muted-soft mb-4">
+        Visual summary of impressions, clicks and engagement for each post in this campaign.
+      </p>
+
+      <div class="chart-wrapper" style="height:260px; position:relative;">
+        <canvas id="campaignPerformanceChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    const labels = {{ chart_labels|default:"[]" }};
+    const impressions = {{ chart_impressions|default:"[]" }};
+    const clicks = {{ chart_clicks|default:"[]" }};
+    const engagement = {{ chart_engagement|default:"[]" }};
+
+    const ctx = document.getElementById('campaignPerformanceChart');
+    if (!ctx || labels.length === 0) {
+      return;
+    }
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            type: 'bar',
+            label: 'Impressions',
+            data: impressions,
+            // sin colores específicos -> Chart.js usa los por defecto
+          },
+          {
+            type: 'bar',
+            label: 'Clicks',
+            data: clicks,
+          },
+          {
+            type: 'line',
+            label: 'Engagement rate',
+            data: engagement,
+            yAxisID: 'y1',
+            tension: 0.3,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: '#e5e7eb'
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#e5e7eb' },
+            grid: { display: false }
+          },
+          y: {
+            position: 'left',
+            ticks: { color: '#e5e7eb' },
+            grid: { color: 'rgba(148, 163, 184, 0.25)' }
+          },
+          y1: {
+            position: 'right',
+            ticks: { color: '#e5e7eb' },
+            grid: { drawOnChartArea: false }
+          }
+        }
+      }
+    });
+  })();
+</script>
 {% endblock %}

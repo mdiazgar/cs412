@@ -1,3 +1,10 @@
+"""
+urls.py
+
+URL configuration for the Campaign Analytics application.
+Maps human-readable URLs to view functions and class-based views.
+"""
+
 from django.urls import path
 from . import views
 

@@ -1,3 +1,15 @@
+"""
+models.py
+Data models for the Campaign Analytics application.
+
+Defines:
+- Objective: high-level marketing objective (e.g., awareness, engagement).
+- Channel: a social media account owned by a business.
+- Campaign: a marketing campaign that runs on a single channel with a budget and dates.
+- Post: individual social posts that belong to a campaign.
+- PostMetrics: aggregated metrics (impressions, likes, comments, shares, clicks) for each post.
+"""
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -6,6 +18,13 @@ User = get_user_model()
 
 # Create your models here.
 class Channel(models.Model):
+    """
+    Social media channel that is tracked in the dashboard.
+
+    Each channel belongs to a single Django user (owner) and stores the
+    platform type (e.g., Instagram, TikTok) and handle that will appear
+    in the UI. Campaigns reference a channel through a foreign key.
+    """
     owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -21,6 +40,13 @@ class Channel(models.Model):
         return self.name
 
 class Objective(models.Model):
+    """
+    Represents a high-level marketing objective for a campaign
+    (e.g., brand awareness, engagement, website traffic).
+
+    This model is standalone and does not depend on other models.
+    Campaigns reference an objective through a foreign key.
+    """
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=120, unique=True)
     description = models.TextField(blank=True)
@@ -32,6 +58,16 @@ class Objective(models.Model):
         return self.name
     
 class Campaign(models.Model):
+    """
+    Marketing campaign running on a single channel.
+
+    A campaign is linked to:
+    - one Channel (where the content is published),
+    - one Objective (what the campaign is trying to achieve).
+
+    It stores name, start/end dates and budget, and serves as the parent
+    for Post objects.
+    """
     OBJECTIVE_CHOICES = [
         ('AWARENESS', 'Brand awareness'),
         ('TRAFFIC', 'Website traffic'),
@@ -59,6 +95,13 @@ class Campaign(models.Model):
 
 
 class Post(models.Model):
+    """
+    Individual social media post that is part of a campaign.
+
+    Stores basic content information (date, content type, caption, URL)
+    and has a 1-to-1 relationship with PostMetrics to keep performance
+    data separated from content.
+    """
     CONTENT_TYPE_CHOICES = [
         ('IMAGE', 'Image'),
         ('VIDEO', 'Video'),
@@ -85,6 +128,13 @@ class Post(models.Model):
 
 
 class PostMetrics(models.Model):
+    """
+    Performance metrics for a single Post.
+
+    Tracks impressions, likes, comments, shares, saves and clicks.
+    Used by the campaign performance report to aggregate results
+    across all posts in a campaign.
+    """
     post = models.OneToOneField(
         Post,
         on_delete=models.CASCADE,

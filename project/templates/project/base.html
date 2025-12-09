@@ -1,3 +1,11 @@
+{# base.html
+   Main layout template for the Campaign Analytics application.
+
+   Provides the top navigation bar, includes Bootstrap and the shared
+   dark-mode styling, and defines the `nav_links` and `content` blocks
+   that all other templates extend.
+#}
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -84,6 +92,17 @@
 <script
   src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 ></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+{# Graphs #}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>
+
 </body>
 </html>
 

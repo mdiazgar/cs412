@@ -1,3 +1,12 @@
+{# report_campaign_performance.html
+   Campaign performance report with filters and aggregated metrics.
+
+   Rendered by campaign_performance_report view. Provides a filter bar
+   for channel and date range, and a table that sums PostMetrics per
+   campaign, displaying total impressions, likes, comments, shares,
+   clicks, engagement rate and CTR.
+#}
+
 {% extends "project/base.html" %}
 
 {% block content %}
@@ -103,5 +112,4 @@
   </div>
 </div>
 {% endblock %}
-
 

@@ -1,0 +1,36 @@
+{% extends "project/base.html" %}
+{% load i18n %}
+
+{# Ocultamos el menú para centrar el foco en el mensaje #}
+{% block nav_links %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-4">
+    <div class="card card-cl">
+      <div class="card-body text-center">
+
+        <h1 class="h4 mb-3 text-light">
+          {% trans "Login cancelled" %}
+        </h1>
+
+        <p class="text-muted-soft mb-4">
+          {% trans "You cancelled logging in with your Google account. If this was a mistake, you can try again or go back to the login page." %}
+        </p>
+
+        <div class="d-grid gap-2 mb-3">
+          <a href="{% url 'account_login' %}" class="btn btn-accent">
+            {% trans "Back to log in" %}
+          </a>
+        </div>
+
+        <p class="text-muted-soft mb-0" style="font-size: 0.9rem;">
+          {% trans "Don’t have an account yet?" %}
+          <a href="{% url 'account_signup' %}">{% trans "Create one" %}</a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

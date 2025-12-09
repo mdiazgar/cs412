@@ -1,3 +1,15 @@
+"""
+views.py
+
+Views for the Campaign Analytics application.
+
+Provides:
+- Dashboard and listing views for channels and campaigns.
+- CRUD views for channels, campaigns, posts and objectives.
+- A campaign performance report with filtering and aggregated metrics.
+- Authentication-protected access using Django's login_required.
+"""
+
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -7,9 +19,17 @@ from .forms import CampaignForm, PostForm
 from django.shortcuts import render
 from django.db.models import Sum
 from datetime import datetime
+import json
+from django.utils.safestring import mark_safe
 
 
 class ChannelListView(LoginRequiredMixin, ListView):
+    """
+    List all social media channels that belong to the logged-in user.
+
+    This is the main dashboard entry point and only shows channels owned
+    by the current user, so different users never see each other's data.
+    """
     model = Channel
     template_name = 'project/channel_list.html'
     context_object_name = 'channels'
@@ -19,16 +39,27 @@ class ChannelListView(LoginRequiredMixin, ListView):
 
 
 class ChannelDetailView(LoginRequiredMixin, DetailView):
+    """
+    Display details for a single Channel owned by the current user.
+
+    The template can show channel metadata and link to the campaigns
+    running on this channel. Access is restricted by owner.
+    """
     model = Channel
     template_name = 'project/channel_detail.html'
     context_object_name = 'channel'
 
     def get_queryset(self):
-        # así nadie puede ver canales de otros usuarios si adivina el ID
         return Channel.objects.filter(owner=self.request.user)
 
 
 class CampaignListView(LoginRequiredMixin, ListView):
+    """
+    List all campaigns that belong to the current user.
+
+    Shows basic campaign information grouped by channel and provides
+    links to view details, edit, or delete a campaign.
+    """
     model = Campaign
     template_name = 'project/campaign_list.html'
     context_object_name = 'campaigns'
@@ -42,9 +73,16 @@ class CampaignListView(LoginRequiredMixin, ListView):
 
 
 class CampaignDetailView(LoginRequiredMixin, DetailView):
+    """
+    Display the detail page for a single Campaign.
+    - Restricts access to campaigns that belong to the current user
+      (via the channel.owner relationship).
+    - Retrieves all posts in the campaign and prepares time-series data
+      (impressions, clicks and engagement rate) to be rendered as a
+      Chart.js visual summary in the template.
+    """
     model = Campaign
     template_name = 'project/campaign_detail.html'
-    context_object_name = 'campaign'
 
     def get_queryset(self):
         return (
@@ -53,8 +91,59 @@ class CampaignDetailView(LoginRequiredMixin, DetailView):
             .select_related('channel')
         )
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        campaign = self.object
+
+        posts = (
+            campaign.posts
+            .order_by('post_date')
+            .select_related('metrics')
+        )
+
+        labels = []
+        impressions = []
+        clicks = []
+        engagement = []
+
+        for post in posts:
+            if post.post_date:
+                label = post.post_date.strftime('%b %d')
+            else:
+                label = f"Post {post.id}"
+
+            labels.append(label)
+
+            if hasattr(post, 'metrics') and post.metrics:
+                m = post.metrics
+                impressions.append(m.impressions)
+                clicks.append(m.clicks)
+                if m.impressions > 0:
+                    er = (m.likes + m.comments + m.shares) / m.impressions
+                else:
+                    er = 0
+                engagement.append(round(er, 3))
+            else:
+                impressions.append(0)
+                clicks.append(0)
+                engagement.append(0)
+
+        context['chart_labels'] = mark_safe(json.dumps(labels))
+        context['chart_impressions'] = mark_safe(json.dumps(impressions))
+        context['chart_clicks'] = mark_safe(json.dumps(clicks))
+        context['chart_engagement'] = mark_safe(json.dumps(engagement))
+
+        return context
+
 
 class PostDetailView(LoginRequiredMixin, DetailView):
+    """
+    Display the details of a single Post that belongs to the current user.
+
+    The view shows basic post info (date, caption, URL) and its metrics.
+    Access is restricted so that a user can only see posts whose campaign
+    is attached to one of their own channels.
+    """
     model = Post
     template_name = 'project/post_detail.html'
     context_object_name = 'post'
@@ -69,6 +158,13 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 
 
 class CampaignCreateView(LoginRequiredMixin, CreateView):
+    """
+    Allow the user to create a new campaign.
+
+    Uses CampaignForm to validate input, automatically associates the
+    campaign with the selected channel, and redirects to the campaign
+    list on success.
+    """
     model = Campaign
     form_class = CampaignForm
     template_name = 'project/campaign_form.html'
@@ -83,6 +179,12 @@ class CampaignCreateView(LoginRequiredMixin, CreateView):
 
 
 class CampaignUpdateView(LoginRequiredMixin, UpdateView):
+    """
+    Allow the user to edit an existing campaign.
+
+    Reuses CampaignForm and enforces that only campaigns belonging to
+    the current user's channels can be updated.
+    """
     model = Campaign
     form_class = CampaignForm
     template_name = 'project/campaign_form.html'
@@ -101,6 +203,13 @@ class CampaignUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
+    """
+    Create a new Post for one of the user's campaigns.
+
+    Once the post is created, an empty PostMetrics record may also be
+    created (if you do this in form_valid) so that performance data can
+    be added later.
+    """
     model = Post
     form_class = PostForm
     template_name = 'project/post_form.html'
@@ -120,6 +229,10 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     
 class PostDeleteView(LoginRequiredMixin, DeleteView):
+    """
+    Delete a Post for one of the user's campaigns.
+
+    """
     model = Post
     template_name = 'project/post_confirm_delete.html'
 
@@ -135,6 +248,19 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 
 @login_required
 def campaign_performance_report(request):
+    """
+    Render an aggregated performance report across campaigns.
+
+    The view accepts optional GET parameters:
+    - channel: filter campaigns by channel id.
+    - start_date, end_date: filter campaigns whose date range overlaps
+      with the selected period.
+
+    For each campaign, it sums post metrics (impressions, likes,
+    comments, shares, clicks) and computes engagement rate and CTR.
+    Results are passed to the 'project/report_campaign_performance.html'
+    template sorted by total impressions.
+    """
     channel_id = request.GET.get('channel')
     start_date_str = request.GET.get('start_date')
     end_date_str = request.GET.get('end_date')
