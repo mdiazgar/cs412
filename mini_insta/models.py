@@ -145,7 +145,7 @@ class Follow(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=["profile", "follower_profile"], name="unique_follow"),
-            models.CheckConstraint(check=~Q(profile=F('follower_profile')), name="no_self_follow"),
+            #models.CheckConstraint(check=~Q(profile=F('follower_profile')), name="no_self_follow"),
         ]
 
     def __str__(self):
