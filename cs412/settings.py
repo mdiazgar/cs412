@@ -29,7 +29,7 @@ SITE_ID = 1
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'cs-webapps.bu.edu']
+ALLOWED_HOSTS = ["*", '127.0.0.1', 'localhost', 'cs-webapps.bu.edu']
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # backend 
