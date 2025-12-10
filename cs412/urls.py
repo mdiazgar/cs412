@@ -35,6 +35,9 @@ urlpatterns = [
     path('dadjokes/', include((dj_urls.html_urlpatterns, 'dadjokes'), namespace='dadjokes')),
     path('api/', include((dj_urls.api_urlpatterns, 'dadjokes_api'), namespace='dadjokes_api')),
     path('project/', include(('project.urls', 'project'), namespace='project')),
+     path('accounts/login/', auth_views.LoginView.as_view(template_name='project/login.html'), name='account_login',
+    ),
+    path('accounts/logout/', auth_views.LogoutView.as_view(next_page='/accounts/login/'), name='account_logout',),
     #path('accounts/', include('allauth.urls')),  
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

@@ -36,8 +36,9 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/project/'           # send after login
-LOGOUT_REDIRECT_URL = '/accounts/login/'          # send after logout
+LOGIN_REDIRECT_URL = '/project/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+
 
 #ACCOUNT_LOGIN_METHODS = {'username', 'email'}   # o {'email'} o {'username', 'email'}
 #ACCOUNT_SIGNUP_FIELDS = ['username', 'email', 'password1', 'password2']
