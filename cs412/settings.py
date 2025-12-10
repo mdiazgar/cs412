@@ -33,39 +33,38 @@ ALLOWED_HOSTS = ["*", '127.0.0.1', 'localhost', 'cs-webapps.bu.edu']
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # backend 
-    'allauth.account.auth_backends.AuthenticationBackend',  # allauth
 ]
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/project/'           # send after login
 LOGOUT_REDIRECT_URL = '/accounts/login/'          # send after logout
 
-ACCOUNT_LOGIN_METHODS = {'username', 'email'}   # o {'email'} o {'username', 'email'}
-ACCOUNT_SIGNUP_FIELDS = ['username', 'email', 'password1', 'password2']
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+#ACCOUNT_LOGIN_METHODS = {'username', 'email'}   # o {'email'} o {'username', 'email'}
+#ACCOUNT_SIGNUP_FIELDS = ['username', 'email', 'password1', 'password2']
+#ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-SOCIALACCOUNT_EMAIL_REQUIRED = True
-SOCIALACCOUNT_USERNAMEL_REQUIRED = True
+#SOCIALACCOUNT_EMAIL_REQUIRED = True
+#SOCIALACCOUNT_USERNAMEL_REQUIRED = True
 
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-            'prompt': 'select_account',  
-        },
-    }
-}
+#SOCIALACCOUNT_PROVIDERS = {
+#    'google': {
+#        'SCOPE': ['profile', 'email'],
+#        'AUTH_PARAMS': {
+#            'access_type': 'online',
+#            'prompt': 'select_account',  
+#        },
+#    }
+#}
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    #'allauth',
+    #'allauth.account',
+    #'allauth.socialaccount',
+    #'allauth.socialaccount.providers.google',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
